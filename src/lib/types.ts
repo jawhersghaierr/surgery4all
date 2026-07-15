@@ -8,6 +8,7 @@ export interface Case {
   duration: string
   description: string
   media_url: string | null
+  media_urls: string[]
   premium: boolean
   sensitive: boolean
 }

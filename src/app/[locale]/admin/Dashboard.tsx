@@ -7,6 +7,7 @@ import { useRouter } from '@/navigation'
 import type { Case, Doc, Post, Sponsor, Subscriber } from '@/lib/types'
 import { SPECIALTIES } from '@/lib/types'
 import { typeText } from '@/components/site/caseCardLogic'
+import { uploadToCloudinary } from '@/lib/cloudinaryUpload'
 import { tabButtonStyle, premiumSuffix, statusPillStyle, type AdminTab } from './adminLogic'
 import {
   logout,
@@ -167,12 +168,14 @@ export function Dashboard({ cases, docs, posts, subscribers, sponsors }: Dashboa
   const [tab, setTab] = useState<AdminTab>('cases')
   const [logoutHover, setLogoutHover] = useState(false)
   const [caseBusy, setCaseBusy] = useState(false)
+  const [uploadPct, setUploadPct] = useState<number | null>(null)
   const [docBusy, setDocBusy] = useState(false)
   const [postBusy, setPostBusy] = useState(false)
   const [sponsorBusy, setSponsorBusy] = useState(false)
 
   const mediaFileRef = useRef<HTMLInputElement>(null)
   const mediaUrlRef = useRef<HTMLInputElement>(null)
+  const mediaUrlsRef = useRef<HTMLInputElement>(null)
 
   async function handleLogout() {
     await logout()
@@ -184,20 +187,28 @@ export function Dashboard({ cases, docs, posts, subscribers, sponsors }: Dashboa
     const form = e.currentTarget
     setCaseBusy(true)
 
-    const file = mediaFileRef.current?.files?.[0]
-    if (file) {
+    const files = Array.from(mediaFileRef.current?.files ?? [])
+    if (files.length > 0) {
+      // Direct browser -> Cloudinary (chunked) for each file. Abort on failure
+      // rather than silently publishing a medialess case. Progress aggregates
+      // across files so the bar reflects the whole batch.
       try {
-        const body = new FormData()
-        body.append('file', file)
-        const res = await fetch('/api/upload', { method: 'POST', body })
-        const json = await res.json().catch(() => null)
-        if (res.ok && json?.url && mediaUrlRef.current) {
-          mediaUrlRef.current.value = json.url
+        const urls: string[] = []
+        for (let i = 0; i < files.length; i++) {
+          const url = await uploadToCloudinary(files[i], (p) =>
+            setUploadPct(Math.round(((i + p / 100) / files.length) * 100))
+          )
+          urls.push(url)
         }
-        // Upload not configured / failed: continue publishing without media.
-      } catch {
-        // Network failure uploading media: continue publishing without media.
+        if (mediaUrlRef.current) mediaUrlRef.current.value = urls[0] ?? ''
+        if (mediaUrlsRef.current) mediaUrlsRef.current.value = JSON.stringify(urls)
+      } catch (err) {
+        setCaseBusy(false)
+        setUploadPct(null)
+        toast.error(err instanceof Error ? err.message : 'upload-failed')
+        return
       }
+      setUploadPct(null)
     }
 
     const result = await addCase(new FormData(form))
@@ -368,8 +379,9 @@ export function Dashboard({ cases, docs, posts, subscribers, sponsors }: Dashboa
                 <option value="video">{t('addCase.typeVideo')}</option>
               </select>
               <textarea name="description" placeholder={t('addCase.descPlaceholder')} rows={3} style={adminTextarea} />
-              <input ref={mediaFileRef} type="file" accept="image/*,video/*" style={adminInput} />
+              <input ref={mediaFileRef} type="file" accept="image/*,video/*" multiple style={adminInput} />
               <input ref={mediaUrlRef} type="hidden" name="media_url" defaultValue="" />
+              <input ref={mediaUrlsRef} type="hidden" name="media_urls" defaultValue="" />
               <label style={checkboxLabelStyle}>
                 <input type="checkbox" name="premium" defaultChecked style={{ width: 16, height: 16, accentColor: '#0FA893' }} />
                 {t('addCase.premiumLabel')}
@@ -379,7 +391,7 @@ export function Dashboard({ cases, docs, posts, subscribers, sponsors }: Dashboa
                 {t('addCase.sensitiveLabel')}
               </label>
               <button type="submit" disabled={caseBusy} style={{ ...adminAddBtn, opacity: caseBusy ? 0.7 : 1 }}>
-                {t('addCase.publish')}
+                {uploadPct !== null ? `${t('addCase.uploading')} ${uploadPct}%` : t('addCase.publish')}
               </button>
             </form>
           </div>

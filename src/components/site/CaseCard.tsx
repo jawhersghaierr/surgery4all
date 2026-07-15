@@ -5,6 +5,7 @@ import { useTranslations } from 'next-intl'
 import { useRouter } from '@/navigation'
 import type { Case } from '@/lib/types'
 import { ImageSlot } from './ImageSlot'
+import { Lightbox } from './Lightbox'
 import { premText, showLock, showSensitive, typeText } from './caseCardLogic'
 
 /** Port of `caseCard.dc.html`'s `badge()` helper (HANDOFF line 61). */
@@ -24,10 +25,16 @@ export function CaseCard({ c }: { c: Case }) {
   const t = useTranslations('caseCard')
   const router = useRouter()
   const [revealed, setRevealed] = useState(false)
+  const [lightboxOpen, setLightboxOpen] = useState(false)
 
   const isVideo = c.type === 'video'
   const locked = showLock(c)
   const sensitive = showSensitive(c, revealed)
+
+  // Photos to browse in the lightbox: the stored list, or the cover alone.
+  const gallery = c.media_urls.length > 0 ? c.media_urls : c.media_url ? [c.media_url] : []
+  // Photo cases only; a video card's play glyph owns the click instead.
+  const canOpen = !locked && !sensitive && !isVideo && gallery.length > 0
 
   const typeLabel = typeText(c, { video: t('video'), photo: t('photo') })
   const accessLabel = premText(c, { premium: t('premium'), free: t('free') })
@@ -46,7 +53,16 @@ export function CaseCard({ c }: { c: Case }) {
         flexDirection: 'column',
       }}
     >
-      <div style={{ position: 'relative', aspectRatio: '4/3', background: 'linear-gradient(135deg,#D9EBE6,#B7DDD4)', overflow: 'hidden' }}>
+      <div
+        onClick={canOpen ? () => setLightboxOpen(true) : undefined}
+        style={{
+          position: 'relative',
+          aspectRatio: '4/3',
+          background: 'linear-gradient(135deg,#D9EBE6,#B7DDD4)',
+          overflow: 'hidden',
+          cursor: canOpen ? 'zoom-in' : 'default',
+        }}
+      >
         <ImageSlot src={c.media_url} placeholder={c.title} />
 
         {/* media type + access badges */}
@@ -54,6 +70,20 @@ export function CaseCard({ c }: { c: Case }) {
           <span style={badgeStyle('rgba(12,21,18,.7)', '#fff')}>{typeLabel}</span>
           <span style={accessBadge}>{accessLabel}</span>
         </div>
+
+        {/* photo-count badge (multi-photo cases) */}
+        {gallery.length > 1 && (
+          <div style={{ position: 'absolute', top: 12, right: 12, zIndex: 3 }}>
+            <span style={{ ...badgeStyle('rgba(12,21,18,.7)', '#fff'), display: 'inline-flex', alignItems: 'center', gap: 5 }}>
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+                <rect x="3" y="3" width="18" height="18" rx="2" />
+                <circle cx="9" cy="9" r="2" />
+                <path d="m21 15-3.09-3.09a2 2 0 0 0-2.82 0L6 21" />
+              </svg>
+              {gallery.length}
+            </span>
+          </div>
+        )}
 
         {/* play glyph for video */}
         {isVideo && (
@@ -151,6 +181,15 @@ export function CaseCard({ c }: { c: Case }) {
         </h3>
         <p style={{ fontSize: '13.5px', lineHeight: 1.5, color: '#566962' }}>{c.description}</p>
       </div>
+
+      {canOpen && (
+        <Lightbox
+          images={gallery}
+          open={lightboxOpen}
+          onClose={() => setLightboxOpen(false)}
+          labels={{ close: t('lightboxClose'), prev: t('lightboxPrev'), next: t('lightboxNext') }}
+        />
+      )}
     </div>
   )
 }

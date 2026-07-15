@@ -8,10 +8,15 @@ create table if not exists cases (
   duration text not null default '',
   description text not null default '',
   media_url text,
+  media_urls text[] not null default '{}',
   premium boolean not null default false,
   sensitive boolean not null default false,
   created_at timestamptz default now()
 );
+
+-- Migration for pre-existing `cases` tables (create-if-not-exists skips the
+-- new column when the table already exists).
+alter table cases add column if not exists media_urls text[] not null default '{}';
 
 create table if not exists documents (
   id uuid default gen_random_uuid() primary key,

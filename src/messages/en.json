@@ -102,7 +102,10 @@
     "lockedTitle": "Subscribers only",
     "lockedCta": "Unlock access →",
     "sensitiveTitle": "Sensitive content",
-    "sensitiveHint": "Click to reveal"
+    "sensitiveHint": "Click to reveal",
+    "lightboxClose": "Close",
+    "lightboxPrev": "Previous photo",
+    "lightboxNext": "Next photo"
   },
   "docs": {
     "eyebrow": "Publications",
@@ -233,7 +236,8 @@
       "descPlaceholder": "Clinical description",
       "premiumLabel": "Subscribers only (premium)",
       "sensitiveLabel": "Sensitive content (blurred)",
-      "publish": "Publish case"
+      "publish": "Publish case",
+      "uploading": "Uploading…"
     },
     "addDoc": {
       "heading": "+ Add a document",
