@@ -177,7 +177,19 @@ export function CaseCard({ c }: { c: Case }) {
         <h3 style={{ fontFamily: "'Space Grotesk'", fontWeight: 600, fontSize: '18px', lineHeight: 1.2, letterSpacing: '-.01em', marginBottom: 8 }}>
           {c.title}
         </h3>
-        <p style={{ fontSize: '13.5px', lineHeight: 1.5, color: '#566962' }}>{c.description}</p>
+        <p
+          style={{
+            fontSize: '13.5px',
+            lineHeight: 1.5,
+            color: '#566962',
+            display: '-webkit-box',
+            WebkitLineClamp: 2,
+            WebkitBoxOrient: 'vertical',
+            overflow: 'hidden',
+          }}
+        >
+          {c.description}
+        </p>
       </div>
     </div>
   )
