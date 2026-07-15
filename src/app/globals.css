@@ -33,4 +33,24 @@
   a { color:#0A857A; text-decoration:none; } a:hover { color:#075049; }
   ::selection { background:#0FA893; color:#fff; }
   @keyframes sfaRise { from{opacity:0;transform:translateY(18px)} to{opacity:1;transform:none} }
+
+  .sfa-burger{display:none}
+  @media (max-width:920px){
+    .sfa-navlinks{display:none!important}
+    .sfa-burger{display:flex!important}
+    .sfa-hidemob{display:none!important}
+    .sfa-hero{grid-template-columns:1fr!important;gap:38px!important}
+    .sfa-h1{font-size:42px!important}
+    .sfa-g2dark,.sfa-about{grid-template-columns:1fr!important;gap:34px!important}
+    .sfa-g3{grid-template-columns:1fr 1fr!important}
+    .sfa-stat4{grid-template-columns:1fr 1fr!important}
+    .sfa-admin2{grid-template-columns:1fr!important}
+    .sfa-footer{grid-template-columns:1fr 1fr!important;gap:30px!important}
+  }
+  @media (max-width:560px){
+    .sfa-g3,.sfa-g2{grid-template-columns:1fr!important}
+    .sfa-footer{grid-template-columns:1fr!important}
+    .sfa-h1{font-size:32px!important}
+    .sfa-about{gap:26px!important}
+  }
 }
