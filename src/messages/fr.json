@@ -102,7 +102,10 @@
     "lockedTitle": "Réservé aux abonnés",
     "lockedCta": "Débloquer l’accès →",
     "sensitiveTitle": "Contenu sensible",
-    "sensitiveHint": "Cliquez pour afficher"
+    "sensitiveHint": "Cliquez pour afficher",
+    "lightboxClose": "Fermer",
+    "lightboxPrev": "Photo précédente",
+    "lightboxNext": "Photo suivante"
   },
   "docs": {
     "eyebrow": "Publications",
@@ -233,7 +236,8 @@
       "descPlaceholder": "Description clinique",
       "premiumLabel": "Réservé aux abonnés (premium)",
       "sensitiveLabel": "Contenu sensible (flou)",
-      "publish": "Publier le cas"
+      "publish": "Publier le cas",
+      "uploading": "Envoi…"
     },
     "addDoc": {
       "heading": "＋ Ajouter un document",

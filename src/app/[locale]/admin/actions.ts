@@ -32,6 +32,20 @@ function nullableStr(formData: FormData, key: string): string | null {
   return v.length > 0 ? v : null
 }
 
+// Parses a JSON-encoded string array from a form field, dropping anything that
+// isn't a non-empty string. Returns [] on missing/invalid input.
+function jsonStringArray(formData: FormData, key: string): string[] {
+  const raw = str(formData, key)
+  if (!raw) return []
+  try {
+    const parsed = JSON.parse(raw)
+    if (!Array.isArray(parsed)) return []
+    return parsed.filter((v): v is string => typeof v === 'string' && v.length > 0)
+  } catch {
+    return []
+  }
+}
+
 // Matches the seed data style (e.g. "8 juil. 2026") — posts.date is a
 // required text column with no DB default, so we synthesize it on insert.
 function frenchShortDate(d: Date): string {
@@ -79,13 +93,20 @@ export async function addCase(formData: FormData): Promise<ActionResult> {
   const type: CaseType = formData.get('type') === 'video' ? 'video' : 'photo'
   const duration = str(formData, 'duration') || (type === 'video' ? '10 min' : '')
 
+  // Client sends the full uploaded-URL list as a JSON array; media_url is the
+  // cover (first). Fall back to media_url alone if the list is absent/invalid.
+  const mediaUrls = jsonStringArray(formData, 'media_urls')
+  const cover = nullableStr(formData, 'media_url')
+  const allUrls = mediaUrls.length > 0 ? mediaUrls : cover ? [cover] : []
+
   const { error } = await supabase.from('cases').insert({
     title: str(formData, 'title'),
     specialty: str(formData, 'specialty'),
     type,
     duration,
     description: str(formData, 'description'),
-    media_url: nullableStr(formData, 'media_url'),
+    media_url: cover ?? allUrls[0] ?? null,
+    media_urls: allUrls,
     premium: checkbox(formData, 'premium'),
     sensitive: checkbox(formData, 'sensitive'),
   })
