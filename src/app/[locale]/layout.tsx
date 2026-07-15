@@ -9,8 +9,9 @@ import { Footer } from '@/components/site/Footer'
 import '../globals.css'
 
 export const metadata: Metadata = {
-  title: 'Surgery4All — Cabinet dentaire',
-  description: 'Cabinet dentaire moderne : soins, esthétique, implantologie. Prenez rendez-vous en ligne.',
+  title: 'Surgery4all — Dr Sghaier Jihed',
+  description:
+    'Chirurgie orale & implantologie : cas cliniques réels (photos/vidéos), publications scientifiques et protocoles. Oral surgery & implantology case library.',
 }
 
 export function generateStaticParams() {

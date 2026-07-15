@@ -4,9 +4,13 @@ import { cookies } from 'next/headers'
 
 export const COOKIE_NAME = 'admin-token'
 
-const secret = new TextEncoder().encode(
-  process.env.JWT_SECRET ?? 'fallback-secret-change-in-production'
-)
+// Fail closed: a committed fallback secret would let anyone forge an admin
+// token in production. Require JWT_SECRET there; allow a dev-only fallback locally.
+const rawSecret = process.env.JWT_SECRET
+if (!rawSecret && process.env.NODE_ENV === 'production') {
+  throw new Error('JWT_SECRET must be set in production')
+}
+const secret = new TextEncoder().encode(rawSecret ?? 'dev-only-fallback-not-for-production')
 
 export async function signToken(payload: Record<string, unknown>): Promise<string> {
   return new SignJWT(payload)
