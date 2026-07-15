@@ -278,6 +278,7 @@
       "titlePlaceholder": "Publication title",
       "journalPlaceholder": "Journal / source",
       "yearPlaceholder": "Year",
+      "pdfLabel": "PDF file (optional)",
       "premiumLabel": "PDF reserved for subscribers",
       "publish": "Publish document"
     },

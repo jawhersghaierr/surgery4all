@@ -5,11 +5,23 @@ import { useTranslations } from 'next-intl'
 import { useRouter } from '@/navigation'
 import type { Doc } from '@/lib/types'
 
+/**
+ * Cloudinary first-page preview of an uploaded PDF: only page 1 is rendered
+ * (as a JPG), so the full document never enters the DOM — safe for premium
+ * teasers. Returns null for non-Cloudinary or non-PDF URLs.
+ */
+function pdfPreviewUrl(pdfUrl: string | null): string | null {
+  if (!pdfUrl) return null
+  if (!pdfUrl.includes('res.cloudinary.com') || !/\.pdf(\?|$)/i.test(pdfUrl)) return null
+  return pdfUrl.replace('/upload/', '/upload/pg_1,w_400,f_jpg,q_auto/')
+}
+
 /** Port of `docRow.dc.html`. Free docs open `pdf_url`; premium docs route to `/pricing`. */
 export function DocRow({ d }: { d: Doc }) {
   const t = useTranslations('docs')
   const router = useRouter()
   const locked = !!d.premium
+  const preview = pdfPreviewUrl(d.pdf_url)
   // Inline `style` always wins over stylesheet rules, so the `style-hover`
   // ports (docRow.dc.html) are done as local hover state rather than CSS
   // classes to guarantee the hover actually takes effect.
@@ -28,12 +40,21 @@ export function DocRow({ d }: { d: Doc }) {
         gap: 20,
       }}
     >
-      <div style={{ width: 48, height: 48, borderRadius: 12, background: 'rgba(15,168,147,.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0A5049" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round">
-          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-          <path d="M14 2v6h6" />
-        </svg>
-      </div>
+      {preview ? (
+        <div style={{ width: 66, height: 88, borderRadius: 8, overflow: 'hidden', flexShrink: 0, border: '1px solid rgba(12,21,18,.1)', background: '#fff', position: 'relative' }}>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={preview} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'top' }} />
+          {/* fade the bottom to signal it's only a preview */}
+          <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, transparent 55%, rgba(255,255,255,.9))', pointerEvents: 'none' }} />
+        </div>
+      ) : (
+        <div style={{ width: 48, height: 48, borderRadius: 12, background: 'rgba(15,168,147,.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0A5049" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+            <path d="M14 2v6h6" />
+          </svg>
+        </div>
+      )}
 
       <div style={{ flex: 1, minWidth: 0 }}>
         <h3 style={{ fontFamily: "'Space Grotesk'", fontWeight: 600, fontSize: '17px', lineHeight: 1.25, letterSpacing: '-.01em', marginBottom: 5 }}>

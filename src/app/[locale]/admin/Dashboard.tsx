@@ -177,12 +177,15 @@ export function Dashboard({ cases, docs, posts, subscribers, sponsors, comments 
   const [editingCase, setEditingCase] = useState<Case | null>(null)
   const [keptUrls, setKeptUrls] = useState<string[]>([])
   const [docBusy, setDocBusy] = useState(false)
+  const [docUploadPct, setDocUploadPct] = useState<number | null>(null)
   const [postBusy, setPostBusy] = useState(false)
   const [sponsorBusy, setSponsorBusy] = useState(false)
 
   const mediaFileRef = useRef<HTMLInputElement>(null)
   const mediaUrlRef = useRef<HTMLInputElement>(null)
   const mediaUrlsRef = useRef<HTMLInputElement>(null)
+  const pdfFileRef = useRef<HTMLInputElement>(null)
+  const pdfUrlRef = useRef<HTMLInputElement>(null)
 
   async function handleLogout() {
     await logout()
@@ -292,6 +295,23 @@ export function Dashboard({ cases, docs, posts, subscribers, sponsors, comments 
     e.preventDefault()
     const form = e.currentTarget
     setDocBusy(true)
+
+    // Optional PDF: upload direct to Cloudinary (no compression for raw files).
+    const pdf = pdfFileRef.current?.files?.[0]
+    if (pdf) {
+      try {
+        setDocUploadPct(0)
+        const url = await uploadToCloudinary(pdf, setDocUploadPct)
+        if (pdfUrlRef.current) pdfUrlRef.current.value = url
+      } catch (err) {
+        setDocBusy(false)
+        setDocUploadPct(null)
+        toast.error(err instanceof Error ? err.message : 'upload-failed')
+        return
+      }
+      setDocUploadPct(null)
+    }
+
     const result = await addDocument(new FormData(form))
     setDocBusy(false)
     if (result?.error) {
@@ -299,6 +319,7 @@ export function Dashboard({ cases, docs, posts, subscribers, sponsors, comments 
       return
     }
     form.reset()
+    if (pdfFileRef.current) pdfFileRef.current.value = ''
     router.refresh()
   }
 
@@ -568,13 +589,15 @@ export function Dashboard({ cases, docs, posts, subscribers, sponsors, comments 
               <input name="title" placeholder={t('addDoc.titlePlaceholder')} required style={adminInput} />
               <input name="journal" placeholder={t('addDoc.journalPlaceholder')} style={adminInput} />
               <input name="year" placeholder={t('addDoc.yearPlaceholder')} defaultValue="2026" style={adminInput} />
-              <input type="hidden" name="pdf_url" defaultValue="" />
+              <label style={{ ...checkboxLabelStyle, fontSize: 12, cursor: 'default' }}>{t('addDoc.pdfLabel')}</label>
+              <input ref={pdfFileRef} type="file" accept="application/pdf" style={adminInput} />
+              <input ref={pdfUrlRef} type="hidden" name="pdf_url" defaultValue="" />
               <label style={checkboxLabelStyle}>
                 <input type="checkbox" name="premium" defaultChecked style={{ width: 16, height: 16, accentColor: '#0FA893' }} />
                 {t('addDoc.premiumLabel')}
               </label>
               <button type="submit" disabled={docBusy} style={{ ...adminAddBtn, opacity: docBusy ? 0.7 : 1 }}>
-                {t('addDoc.publish')}
+                {docUploadPct !== null ? `${t('addCase.uploading')} ${docUploadPct}%` : t('addDoc.publish')}
               </button>
             </form>
           </div>
