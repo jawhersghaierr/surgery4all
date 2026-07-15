@@ -4,10 +4,11 @@ import { useRef, useState, type CSSProperties, type FormEvent, type ReactNode } 
 import { useTranslations } from 'next-intl'
 import { toast } from 'sonner'
 import { useRouter } from '@/navigation'
-import type { Case, Doc, Post, Sponsor, Subscriber } from '@/lib/types'
+import type { Case, Comment, Doc, Post, Sponsor, Subscriber } from '@/lib/types'
 import { SPECIALTIES } from '@/lib/types'
 import { typeText } from '@/components/site/caseCardLogic'
 import { uploadToCloudinary } from '@/lib/cloudinaryUpload'
+import { compressImage } from '@/lib/imageCompress'
 import { tabButtonStyle, premiumSuffix, statusPillStyle, type AdminTab } from './adminLogic'
 import {
   logout,
@@ -19,6 +20,9 @@ import {
   deletePost,
   addSponsor,
   deleteSponsor,
+  approveComment,
+  deleteComment,
+  updateCase,
 } from './actions'
 
 const adminInput: CSSProperties = {
@@ -148,6 +152,7 @@ interface DashboardProps {
   posts: Post[]
   subscribers: Subscriber[]
   sponsors: Sponsor[]
+  comments: Comment[]
 }
 
 /**
@@ -159,7 +164,7 @@ interface DashboardProps {
  * mutation ends in `router.refresh()` so the freshly revalidated server data
  * flows back down through `page.tsx`.
  */
-export function Dashboard({ cases, docs, posts, subscribers, sponsors }: DashboardProps) {
+export function Dashboard({ cases, docs, posts, subscribers, sponsors, comments }: DashboardProps) {
   const t = useTranslations('admin')
   const tCase = useTranslations('caseCard')
   const tDocs = useTranslations('docs')
@@ -169,6 +174,8 @@ export function Dashboard({ cases, docs, posts, subscribers, sponsors }: Dashboa
   const [logoutHover, setLogoutHover] = useState(false)
   const [caseBusy, setCaseBusy] = useState(false)
   const [uploadPct, setUploadPct] = useState<number | null>(null)
+  const [editingCase, setEditingCase] = useState<Case | null>(null)
+  const [keptUrls, setKeptUrls] = useState<string[]>([])
   const [docBusy, setDocBusy] = useState(false)
   const [postBusy, setPostBusy] = useState(false)
   const [sponsorBusy, setSponsorBusy] = useState(false)
@@ -182,33 +189,39 @@ export function Dashboard({ cases, docs, posts, subscribers, sponsors }: Dashboa
     router.refresh()
   }
 
+  // Uploads each picked file directly to Cloudinary (compressing images first),
+  // reporting aggregate progress across the batch. Returns the new URLs.
+  async function uploadPickedFiles(): Promise<string[]> {
+    const files = Array.from(mediaFileRef.current?.files ?? [])
+    if (files.length === 0) return []
+    const urls: string[] = []
+    setUploadPct(0)
+    for (let i = 0; i < files.length; i++) {
+      const file = await compressImage(files[i])
+      const url = await uploadToCloudinary(file, (p) =>
+        setUploadPct(Math.round(((i + p / 100) / files.length) * 100))
+      )
+      urls.push(url)
+    }
+    setUploadPct(null)
+    return urls
+  }
+
   async function handleAddCase(e: FormEvent<HTMLFormElement>) {
     e.preventDefault()
     const form = e.currentTarget
     setCaseBusy(true)
 
-    const files = Array.from(mediaFileRef.current?.files ?? [])
-    if (files.length > 0) {
-      // Direct browser -> Cloudinary (chunked) for each file. Abort on failure
-      // rather than silently publishing a medialess case. Progress aggregates
-      // across files so the bar reflects the whole batch.
-      try {
-        const urls: string[] = []
-        for (let i = 0; i < files.length; i++) {
-          const url = await uploadToCloudinary(files[i], (p) =>
-            setUploadPct(Math.round(((i + p / 100) / files.length) * 100))
-          )
-          urls.push(url)
-        }
-        if (mediaUrlRef.current) mediaUrlRef.current.value = urls[0] ?? ''
-        if (mediaUrlsRef.current) mediaUrlsRef.current.value = JSON.stringify(urls)
-      } catch (err) {
-        setCaseBusy(false)
-        setUploadPct(null)
-        toast.error(err instanceof Error ? err.message : 'upload-failed')
-        return
-      }
+    // Abort on upload failure rather than silently publishing a medialess case.
+    try {
+      const urls = await uploadPickedFiles()
+      if (mediaUrlRef.current) mediaUrlRef.current.value = urls[0] ?? ''
+      if (mediaUrlsRef.current) mediaUrlsRef.current.value = JSON.stringify(urls)
+    } catch (err) {
+      setCaseBusy(false)
       setUploadPct(null)
+      toast.error(err instanceof Error ? err.message : 'upload-failed')
+      return
     }
 
     const result = await addCase(new FormData(form))
@@ -222,12 +235,56 @@ export function Dashboard({ cases, docs, posts, subscribers, sponsors }: Dashboa
     router.refresh()
   }
 
+  function startEditCase(c: Case) {
+    setEditingCase(c)
+    setKeptUrls((c.media_urls ?? []).length > 0 ? c.media_urls : c.media_url ? [c.media_url] : [])
+    setTab('cases')
+    if (mediaFileRef.current) mediaFileRef.current.value = ''
+  }
+
+  function cancelEdit() {
+    setEditingCase(null)
+    setKeptUrls([])
+    if (mediaFileRef.current) mediaFileRef.current.value = ''
+  }
+
+  async function handleUpdateCase(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault()
+    if (!editingCase) return
+    const form = e.currentTarget
+    setCaseBusy(true)
+
+    let urls = [...keptUrls]
+    try {
+      const uploaded = await uploadPickedFiles()
+      urls = [...keptUrls, ...uploaded]
+    } catch (err) {
+      setCaseBusy(false)
+      setUploadPct(null)
+      toast.error(err instanceof Error ? err.message : 'upload-failed')
+      return
+    }
+
+    const data = new FormData(form)
+    data.set('media_url', urls[0] ?? '')
+    data.set('media_urls', JSON.stringify(urls))
+    const result = await updateCase(editingCase.id, data)
+    setCaseBusy(false)
+    if (result?.error) {
+      toast.error(result.error)
+      return
+    }
+    cancelEdit()
+    router.refresh()
+  }
+
   async function handleDeleteCase(id: string) {
     const result = await deleteCase(id)
     if (result?.error) {
       toast.error(result.error)
       return
     }
+    if (editingCase?.id === id) cancelEdit()
     router.refresh()
   }
 
@@ -300,7 +357,26 @@ export function Dashboard({ cases, docs, posts, subscribers, sponsors }: Dashboa
     router.refresh()
   }
 
+  async function handleApproveComment(id: string) {
+    const result = await approveComment(id)
+    if (result?.error) {
+      toast.error(result.error)
+      return
+    }
+    router.refresh()
+  }
+
+  async function handleDeleteComment(id: string) {
+    const result = await deleteComment(id)
+    if (result?.error) {
+      toast.error(result.error)
+      return
+    }
+    router.refresh()
+  }
+
   const deleteLabel = t('delete')
+  const pendingCount = comments.filter((c) => !c.approved).length
 
   return (
     <div style={{ maxWidth: 1220, margin: '0 auto', padding: '44px 32px 90px' }}>
@@ -358,46 +434,98 @@ export function Dashboard({ cases, docs, posts, subscribers, sponsors }: Dashboa
         <button type="button" onClick={() => setTab('sponsors')} style={tabButtonStyle(tab === 'sponsors')}>
           {t('tabs.sponsors')}
         </button>
+        <button type="button" onClick={() => setTab('comments')} style={tabButtonStyle(tab === 'comments')}>
+          {t('tabs.comments')}
+          {pendingCount > 0 && (
+            <span style={{ marginLeft: 7, padding: '1px 7px', borderRadius: 999, background: '#FF8A4C', color: '#0C1512', fontSize: 11, fontWeight: 700 }}>
+              {pendingCount}
+            </span>
+          )}
+        </button>
       </div>
 
       {/* Tab: Cases */}
       {tab === 'cases' && (
         <div className="sfa-admin2" style={{ display: 'grid', gridTemplateColumns: '340px 1fr', gap: 26, alignItems: 'start' }}>
           <div style={panelStyle}>
-            <h3 style={{ fontFamily: "'Space Grotesk'", fontWeight: 600, fontSize: 17, marginBottom: 18 }}>{t('addCase.heading')}</h3>
-            <form onSubmit={handleAddCase} style={{ display: 'flex', flexDirection: 'column', gap: 11 }}>
-              <input name="title" placeholder={t('addCase.titlePlaceholder')} required style={adminInput} />
-              <select name="specialty" defaultValue={SPECIALTIES[0]} style={adminInput}>
+            <h3 style={{ fontFamily: "'Space Grotesk'", fontWeight: 600, fontSize: 17, marginBottom: 18 }}>
+              {editingCase ? t('editCase.heading') : t('addCase.heading')}
+            </h3>
+            <form
+              key={editingCase?.id ?? 'new'}
+              onSubmit={editingCase ? handleUpdateCase : handleAddCase}
+              style={{ display: 'flex', flexDirection: 'column', gap: 11 }}
+            >
+              <input name="title" placeholder={t('addCase.titlePlaceholder')} required defaultValue={editingCase?.title ?? ''} style={adminInput} />
+              <select name="specialty" defaultValue={editingCase?.specialty ?? SPECIALTIES[0]} style={adminInput}>
                 {SPECIALTIES.map((s) => (
                   <option key={s} value={s}>
                     {s}
                   </option>
                 ))}
               </select>
-              <select name="type" defaultValue="photo" style={adminInput}>
+              <select name="type" defaultValue={editingCase?.type ?? 'photo'} style={adminInput}>
                 <option value="photo">{t('addCase.typePhoto')}</option>
                 <option value="video">{t('addCase.typeVideo')}</option>
               </select>
-              <textarea name="description" placeholder={t('addCase.descPlaceholder')} rows={3} style={adminTextarea} />
+              <textarea name="description" placeholder={t('addCase.descPlaceholder')} rows={3} defaultValue={editingCase?.description ?? ''} style={adminTextarea} />
+
+              {/* Existing photos (edit mode): remove any before saving */}
+              {editingCase && keptUrls.length > 0 && (
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
+                  {keptUrls.map((url, i) => (
+                    <div key={url + i} style={{ position: 'relative', width: 60, height: 60, borderRadius: 8, overflow: 'hidden', border: '1px solid rgba(255,255,255,.16)' }}>
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img src={url} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                      <button
+                        type="button"
+                        onClick={() => setKeptUrls((prev) => prev.filter((u) => u !== url))}
+                        aria-label={t('editCase.removePhoto')}
+                        title={t('editCase.removePhoto')}
+                        style={{ position: 'absolute', top: 2, right: 2, width: 20, height: 20, borderRadius: '50%', border: 'none', background: 'rgba(12,21,18,.75)', color: '#fff', cursor: 'pointer', fontSize: 13, lineHeight: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                      >
+                        ×
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              <label style={{ ...checkboxLabelStyle, fontSize: 12, cursor: 'default' }}>
+                {editingCase ? t('editCase.addPhotos') : t('addCase.mediaLabel')}
+              </label>
               <input ref={mediaFileRef} type="file" accept="image/*,video/*" multiple style={adminInput} />
               <input ref={mediaUrlRef} type="hidden" name="media_url" defaultValue="" />
               <input ref={mediaUrlsRef} type="hidden" name="media_urls" defaultValue="" />
               <label style={checkboxLabelStyle}>
-                <input type="checkbox" name="premium" defaultChecked style={{ width: 16, height: 16, accentColor: '#0FA893' }} />
+                <input type="checkbox" name="premium" defaultChecked={editingCase ? editingCase.premium : true} style={{ width: 16, height: 16, accentColor: '#0FA893' }} />
                 {t('addCase.premiumLabel')}
               </label>
               <label style={checkboxLabelStyle}>
-                <input type="checkbox" name="sensitive" defaultChecked style={{ width: 16, height: 16, accentColor: '#FF8A4C' }} />
+                <input type="checkbox" name="sensitive" defaultChecked={editingCase ? editingCase.sensitive : true} style={{ width: 16, height: 16, accentColor: '#FF8A4C' }} />
                 {t('addCase.sensitiveLabel')}
               </label>
               <button type="submit" disabled={caseBusy} style={{ ...adminAddBtn, opacity: caseBusy ? 0.7 : 1 }}>
-                {uploadPct !== null ? `${t('addCase.uploading')} ${uploadPct}%` : t('addCase.publish')}
+                {uploadPct !== null
+                  ? `${t('addCase.uploading')} ${uploadPct}%`
+                  : editingCase
+                    ? t('editCase.save')
+                    : t('addCase.publish')}
               </button>
+              {editingCase && (
+                <button
+                  type="button"
+                  onClick={cancelEdit}
+                  style={{ height: 40, borderRadius: 11, border: '1px solid rgba(255,255,255,.18)', background: 'transparent', color: '#fff', fontWeight: 500, fontSize: 14, cursor: 'pointer', fontFamily: 'inherit' }}
+                >
+                  {t('editCase.cancel')}
+                </button>
+              )}
             </form>
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
             {cases.map((c) => (
-              <div key={c.id} style={rowStyle}>
+              <div key={c.id} style={{ ...rowStyle, outline: editingCase?.id === c.id ? '2px solid #4FD8C6' : 'none' }}>
                 <RowIcon background="linear-gradient(135deg,#0FA893,#0A5049)">
                   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
                     <rect x="3" y="3" width="18" height="18" rx="2" />
@@ -412,6 +540,18 @@ export function Dashboard({ cases, docs, posts, subscribers, sponsors }: Dashboa
                     {premiumSuffix(c.premium, { premium: tCase('premium'), free: tCase('free') })}
                   </div>
                 </div>
+                <button
+                  type="button"
+                  onClick={() => startEditCase(c)}
+                  aria-label={t('editCase.edit')}
+                  title={t('editCase.edit')}
+                  style={{ width: 32, height: 32, borderRadius: 8, border: '1px solid rgba(255,255,255,.14)', background: 'transparent', color: 'rgba(255,255,255,.7)', cursor: 'pointer', flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                >
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M12 20h9" />
+                    <path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z" />
+                  </svg>
+                </button>
                 <DeleteButton label={deleteLabel} onClick={() => handleDeleteCase(c.id)} />
               </div>
             ))}
@@ -595,6 +735,57 @@ export function Dashboard({ cases, docs, posts, subscribers, sponsors }: Dashboa
               </div>
             ))}
           </div>
+        </div>
+      )}
+
+      {/* Tab: Comments (moderation) */}
+      {tab === 'comments' && (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+          {comments.length === 0 && <div style={rowSubtitleStyle}>{t('comments.empty')}</div>}
+          {comments.map((cm) => (
+            <div key={cm.id} style={{ ...rowStyle, alignItems: 'flex-start' }}>
+              <div style={{ minWidth: 0, flex: 1 }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 9, marginBottom: 5 }}>
+                  <span style={rowTitleStyle}>{cm.author}</span>
+                  <span
+                    style={{
+                      padding: '2px 8px',
+                      borderRadius: 7,
+                      fontSize: 11,
+                      fontWeight: 600,
+                      background: cm.approved ? 'rgba(15,168,147,.18)' : 'rgba(255,138,76,.18)',
+                      color: cm.approved ? '#4FD8C6' : '#FFB07C',
+                    }}
+                  >
+                    {cm.approved ? t('comments.approved') : t('comments.pending')}
+                  </span>
+                </div>
+                <div style={{ fontSize: 13.5, lineHeight: 1.5, color: 'rgba(255,255,255,.75)', whiteSpace: 'pre-wrap' }}>{cm.body}</div>
+              </div>
+              {!cm.approved && (
+                <button
+                  type="button"
+                  onClick={() => handleApproveComment(cm.id)}
+                  style={{
+                    height: 32,
+                    padding: '0 14px',
+                    borderRadius: 8,
+                    border: 'none',
+                    background: '#0FA893',
+                    color: '#fff',
+                    fontWeight: 600,
+                    fontSize: 13,
+                    cursor: 'pointer',
+                    fontFamily: 'inherit',
+                    flexShrink: 0,
+                  }}
+                >
+                  {t('comments.approve')}
+                </button>
+              )}
+              <DeleteButton label={deleteLabel} onClick={() => handleDeleteComment(cm.id)} />
+            </div>
+          ))}
         </div>
       )}
     </div>

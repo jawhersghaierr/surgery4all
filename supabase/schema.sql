@@ -55,3 +55,12 @@ create table if not exists sponsors (
   url text,
   created_at timestamptz default now()
 );
+
+create table if not exists comments (
+  id uuid default gen_random_uuid() primary key,
+  case_id uuid not null references cases(id) on delete cascade,
+  author text not null,
+  body text not null,
+  approved boolean not null default false,
+  created_at timestamptz default now()
+);

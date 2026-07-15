@@ -1,11 +1,10 @@
 'use client'
 
-import { useState, type CSSProperties } from 'react'
+import { type CSSProperties } from 'react'
 import { useTranslations } from 'next-intl'
 import { useRouter } from '@/navigation'
 import type { Case } from '@/lib/types'
 import { ImageSlot } from './ImageSlot'
-import { Lightbox } from './Lightbox'
 import { premText, showLock, showSensitive, typeText } from './caseCardLogic'
 
 /** Port of `caseCard.dc.html`'s `badge()` helper (HANDOFF line 61). */
@@ -24,17 +23,19 @@ function badgeStyle(background: string, color: string): CSSProperties {
 export function CaseCard({ c }: { c: Case }) {
   const t = useTranslations('caseCard')
   const router = useRouter()
-  const [revealed, setRevealed] = useState(false)
-  const [lightboxOpen, setLightboxOpen] = useState(false)
 
   const isVideo = c.type === 'video'
   const locked = showLock(c)
-  const sensitive = showSensitive(c, revealed)
+  // Card thumbnail always shows the sensitive blur (reveal happens on detail).
+  const sensitive = showSensitive(c, false)
 
-  // Photos to browse in the lightbox: the stored list, or the cover alone.
-  const gallery = c.media_urls.length > 0 ? c.media_urls : c.media_url ? [c.media_url] : []
-  // Photo cases only; a video card's play glyph owns the click instead.
-  const canOpen = !locked && !sensitive && !isVideo && gallery.length > 0
+  // Photo count for the badge: stored list, or the cover alone. Guard against
+  // a missing media_urls column (select('*') omits columns that don't exist).
+  const mediaUrls = c.media_urls ?? []
+  const gallery = mediaUrls.length > 0 ? mediaUrls : c.media_url ? [c.media_url] : []
+  // Non-premium cards navigate to the detail page; premium cards route to
+  // pricing via their lock overlay instead.
+  const navigable = !locked
 
   const typeLabel = typeText(c, { video: t('video'), photo: t('photo') })
   const accessLabel = premText(c, { premium: t('premium'), free: t('free') })
@@ -44,6 +45,7 @@ export function CaseCard({ c }: { c: Case }) {
 
   return (
     <div
+      onClick={navigable ? () => router.push(`/cases/${c.id}`) : undefined}
       style={{
         background: '#fff',
         border: '1px solid rgba(12,21,18,.08)',
@@ -51,16 +53,15 @@ export function CaseCard({ c }: { c: Case }) {
         overflow: 'hidden',
         display: 'flex',
         flexDirection: 'column',
+        cursor: navigable ? 'pointer' : 'default',
       }}
     >
       <div
-        onClick={canOpen ? () => setLightboxOpen(true) : undefined}
         style={{
           position: 'relative',
           aspectRatio: '4/3',
           background: 'linear-gradient(135deg,#D9EBE6,#B7DDD4)',
           overflow: 'hidden',
-          cursor: canOpen ? 'zoom-in' : 'default',
         }}
       >
         <ImageSlot src={c.media_url} placeholder={c.title} />
@@ -110,7 +111,7 @@ export function CaseCard({ c }: { c: Case }) {
         {/* premium lock overlay (always wins over the sensitive blur) */}
         {locked && (
           <div
-            onClick={() => router.push('/pricing')}
+            onClick={(e) => { e.stopPropagation(); router.push('/pricing') }}
             role="button"
             tabIndex={0}
             style={{
@@ -141,12 +142,10 @@ export function CaseCard({ c }: { c: Case }) {
           </div>
         )}
 
-        {/* sensitive-content blur overlay */}
+        {/* sensitive-content blur overlay (visual only; reveal happens on the
+            detail page — clicking the card navigates there) */}
         {sensitive && (
           <div
-            onClick={() => setRevealed(true)}
-            role="button"
-            tabIndex={0}
             style={{
               position: 'absolute',
               inset: 0,
@@ -158,7 +157,6 @@ export function CaseCard({ c }: { c: Case }) {
               alignItems: 'center',
               justifyContent: 'center',
               gap: 10,
-              cursor: 'pointer',
               padding: 20,
               textAlign: 'center',
             }}
@@ -181,15 +179,6 @@ export function CaseCard({ c }: { c: Case }) {
         </h3>
         <p style={{ fontSize: '13.5px', lineHeight: 1.5, color: '#566962' }}>{c.description}</p>
       </div>
-
-      {canOpen && (
-        <Lightbox
-          images={gallery}
-          open={lightboxOpen}
-          onClose={() => setLightboxOpen(false)}
-          labels={{ close: t('lightboxClose'), prev: t('lightboxPrev'), next: t('lightboxNext') }}
-        />
-      )}
     </div>
   )
 }

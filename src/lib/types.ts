@@ -38,6 +38,15 @@ export interface Sponsor {
   url: string | null
 }
 
+export interface Comment {
+  id: string
+  case_id: string
+  author: string
+  body: string
+  approved: boolean
+  created_at?: string
+}
+
 export type SubStatus = 'active' | 'free' | 'paused'
 
 export interface Subscriber {

@@ -1,4 +1,4 @@
-import type { Case, Doc, Post, Sponsor, Subscriber } from '@/lib/types'
+import type { Case, Comment, Doc, Post, Sponsor, Subscriber } from '@/lib/types'
 
 export const seedCases: Case[] = [
   {
@@ -184,6 +184,11 @@ export const seedSponsors: Sponsor[] = [
   { id: 'sp4', name: 'Geistlich', logo_url: null, url: null },
   { id: 'sp5', name: 'MIS Implants', logo_url: null, url: null },
   { id: 'sp6', name: 'BioHorizons', logo_url: null, url: null },
+]
+
+export const seedComments: Comment[] = [
+  { id: 'cm1', case_id: 'c1', author: 'Dr. Laurent M.', body: 'Documentation très claire, merci pour le partage.', approved: true },
+  { id: 'cm2', case_id: 'c1', author: 'Étudiant DFASO2', body: 'Le déroulé étape par étape aide beaucoup pour la révision.', approved: true },
 ]
 
 export const seedSubscribers: Subscriber[] = [

@@ -8,7 +8,7 @@
 -- To start FULLY EMPTY instead (no seed rows, add your own via admin),
 -- run ONLY the truncate line below and skip the inserts.
 
-truncate cases, documents, posts, subscribers, sponsors restart identity cascade;
+truncate cases, documents, posts, subscribers, sponsors, comments restart identity cascade;
 
 insert into cases (title, specialty, type, duration, description, media_url, premium, sensitive) values
   ('Pose implant unitaire secteur 46', 'Implantologie', 'video', '12 min', 'Extraction-implantation immédiate avec mise en charge.', null, false, true),
@@ -47,3 +47,12 @@ insert into sponsors (name, logo_url, url) values
   ('Geistlich', null, null),
   ('MIS Implants', null, null),
   ('BioHorizons', null, null);
+
+-- Sample approved comments on the first (oldest) case.
+insert into comments (case_id, author, body, approved)
+select id, author, body, true
+from (values
+  ('Dr. Laurent M.', 'Documentation très claire, merci pour le partage.'),
+  ('Étudiant DFASO2', 'Le déroulé étape par étape aide beaucoup pour la révision.')
+) as c(author, body)
+cross join (select id from cases order by created_at limit 1) as first_case;

@@ -1,6 +1,6 @@
 import { setRequestLocale } from 'next-intl/server'
 import { getSession } from '@/lib/auth'
-import { getCases, getDocuments, getPosts, getSponsors, getSubscribers } from '@/lib/data'
+import { getAllComments, getCases, getDocuments, getPosts, getSponsors, getSubscribers } from '@/lib/data'
 import { LoginForm } from './LoginForm'
 import { Dashboard } from './Dashboard'
 
@@ -24,17 +24,18 @@ export default async function AdminPage({ params }: { params: { locale: string }
     )
   }
 
-  const [cases, docs, posts, subscribers, sponsors] = await Promise.all([
+  const [cases, docs, posts, subscribers, sponsors, comments] = await Promise.all([
     getCases(),
     getDocuments(),
     getPosts(),
     getSubscribers(),
     getSponsors(),
+    getAllComments(),
   ])
 
   return (
     <main style={{ minHeight: 'calc(100vh - 72px)', background: '#0C1512', color: '#fff' }}>
-      <Dashboard cases={cases} docs={docs} posts={posts} subscribers={subscribers} sponsors={sponsors} />
+      <Dashboard cases={cases} docs={docs} posts={posts} subscribers={subscribers} sponsors={sponsors} comments={comments} />
     </main>
   )
 }

@@ -107,6 +107,24 @@
     "lightboxPrev": "Photo précédente",
     "lightboxNext": "Photo suivante"
   },
+  "caseDetail": {
+    "back": "Retour aux cas",
+    "premiumTitle": "Cas réservé aux abonnés",
+    "premiumBody": "Ce cas clinique complet (photos, description et commentaires) est réservé aux abonnés.",
+    "premiumCta": "Voir les abonnements",
+    "sensitiveTitle": "Contenu sensible",
+    "sensitiveHint": "Cliquez pour afficher",
+    "lightboxClose": "Fermer",
+    "lightboxPrev": "Photo précédente",
+    "lightboxNext": "Photo suivante",
+    "noMedia": "Aucun média pour ce cas.",
+    "commentsTitle": "Commentaires",
+    "commentsEmpty": "Aucun commentaire pour l’instant. Soyez le premier.",
+    "formAuthor": "Votre nom",
+    "formBody": "Votre commentaire",
+    "formSubmit": "Envoyer",
+    "formPending": "Merci ! Votre commentaire sera publié après validation."
+  },
   "docs": {
     "eyebrow": "Publications",
     "title": "Documents scientifiques",
@@ -217,7 +235,14 @@
       "docs": "Documents",
       "posts": "Articles",
       "subs": "Abonnés",
-      "sponsors": "Sponsors"
+      "sponsors": "Sponsors",
+      "comments": "Commentaires"
+    },
+    "comments": {
+      "empty": "Aucun commentaire.",
+      "pending": "En attente",
+      "approved": "Publié",
+      "approve": "Approuver"
     },
     "addSponsor": {
       "heading": "＋ Ajouter un sponsor",
@@ -237,7 +262,16 @@
       "premiumLabel": "Réservé aux abonnés (premium)",
       "sensitiveLabel": "Contenu sensible (flou)",
       "publish": "Publier le cas",
-      "uploading": "Envoi…"
+      "uploading": "Envoi…",
+      "mediaLabel": "Photos / vidéo (plusieurs possibles)"
+    },
+    "editCase": {
+      "heading": "✎ Modifier le cas",
+      "edit": "Modifier",
+      "save": "Enregistrer",
+      "cancel": "Annuler",
+      "addPhotos": "Ajouter des photos / vidéo",
+      "removePhoto": "Retirer cette photo"
     },
     "addDoc": {
       "heading": "＋ Ajouter un document",

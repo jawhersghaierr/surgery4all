@@ -116,6 +116,39 @@ export async function addCase(formData: FormData): Promise<ActionResult> {
   return { ok: true }
 }
 
+export async function updateCase(id: string, formData: FormData): Promise<ActionResult> {
+  const guard = await requireAdmin()
+  if (guard) return guard
+
+  const type: CaseType = formData.get('type') === 'video' ? 'video' : 'photo'
+  const duration = str(formData, 'duration') || (type === 'video' ? '10 min' : '')
+
+  // Same cover/gallery coupling as addCase so they never drift: cover is the
+  // first of the combined kept+new URL list the client sends.
+  const mediaUrls = jsonStringArray(formData, 'media_urls')
+  const cover = nullableStr(formData, 'media_url')
+  const allUrls = mediaUrls.length > 0 ? mediaUrls : cover ? [cover] : []
+
+  const { error } = await supabase
+    .from('cases')
+    .update({
+      title: str(formData, 'title'),
+      specialty: str(formData, 'specialty'),
+      type,
+      duration,
+      description: str(formData, 'description'),
+      media_url: allUrls[0] ?? cover ?? null,
+      media_urls: allUrls,
+      premium: checkbox(formData, 'premium'),
+      sensitive: checkbox(formData, 'sensitive'),
+    })
+    .eq('id', id)
+  if (error) return { error: error.message }
+
+  revalidatePath('/', 'layout')
+  return { ok: true }
+}
+
 export async function deleteCase(id: string): Promise<ActionResult> {
   const guard = await requireAdmin()
   if (guard) return guard
@@ -177,6 +210,52 @@ export async function deletePost(id: string): Promise<ActionResult> {
   if (guard) return guard
 
   const { error } = await supabase.from('posts').delete().eq('id', id)
+  if (error) return { error: error.message }
+
+  revalidatePath('/', 'layout')
+  return { ok: true }
+}
+
+// PUBLIC (unauthenticated) mutation — the only one. All guarantees live here:
+// gate on backend config, cap+trim lengths, and force approved=false server-
+// side. Never read an `approved` field from the client.
+export async function addComment(formData: FormData): Promise<ActionResult> {
+  if (!isBackendConfigured()) return { error: 'backend-not-configured' }
+
+  const caseId = str(formData, 'case_id')
+  const author = str(formData, 'author').slice(0, 80)
+  const body = str(formData, 'body').slice(0, 2000)
+
+  if (!caseId || !author || !body) return { error: 'invalid' }
+
+  const { error } = await supabase.from('comments').insert({
+    case_id: caseId,
+    author,
+    body,
+    approved: false,
+  })
+  if (error) return { error: error.message }
+
+  // Pending comments aren't shown, so no revalidation needed until approval.
+  return { ok: true }
+}
+
+export async function approveComment(id: string): Promise<ActionResult> {
+  const guard = await requireAdmin()
+  if (guard) return guard
+
+  const { error } = await supabase.from('comments').update({ approved: true }).eq('id', id)
+  if (error) return { error: error.message }
+
+  revalidatePath('/', 'layout')
+  return { ok: true }
+}
+
+export async function deleteComment(id: string): Promise<ActionResult> {
+  const guard = await requireAdmin()
+  if (guard) return guard
+
+  const { error } = await supabase.from('comments').delete().eq('id', id)
   if (error) return { error: error.message }
 
   revalidatePath('/', 'layout')

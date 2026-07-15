@@ -107,6 +107,24 @@
     "lightboxPrev": "Previous photo",
     "lightboxNext": "Next photo"
   },
+  "caseDetail": {
+    "back": "Back to cases",
+    "premiumTitle": "Subscribers-only case",
+    "premiumBody": "This full clinical case (photos, description and comments) is reserved for subscribers.",
+    "premiumCta": "View plans",
+    "sensitiveTitle": "Sensitive content",
+    "sensitiveHint": "Click to reveal",
+    "lightboxClose": "Close",
+    "lightboxPrev": "Previous photo",
+    "lightboxNext": "Next photo",
+    "noMedia": "No media for this case.",
+    "commentsTitle": "Comments",
+    "commentsEmpty": "No comments yet. Be the first.",
+    "formAuthor": "Your name",
+    "formBody": "Your comment",
+    "formSubmit": "Send",
+    "formPending": "Thanks! Your comment will appear once approved."
+  },
   "docs": {
     "eyebrow": "Publications",
     "title": "Scientific documents",
@@ -217,7 +235,14 @@
       "docs": "Documents",
       "posts": "Articles",
       "subs": "Subscribers",
-      "sponsors": "Sponsors"
+      "sponsors": "Sponsors",
+      "comments": "Comments"
+    },
+    "comments": {
+      "empty": "No comments.",
+      "pending": "Pending",
+      "approved": "Published",
+      "approve": "Approve"
     },
     "addSponsor": {
       "heading": "＋ Add a sponsor",
@@ -237,7 +262,16 @@
       "premiumLabel": "Subscribers only (premium)",
       "sensitiveLabel": "Sensitive content (blurred)",
       "publish": "Publish case",
-      "uploading": "Uploading…"
+      "uploading": "Uploading…",
+      "mediaLabel": "Photos / video (multiple allowed)"
+    },
+    "editCase": {
+      "heading": "✎ Edit case",
+      "edit": "Edit",
+      "save": "Save",
+      "cancel": "Cancel",
+      "addPhotos": "Add photos / video",
+      "removePhoto": "Remove this photo"
     },
     "addDoc": {
       "heading": "+ Add a document",
