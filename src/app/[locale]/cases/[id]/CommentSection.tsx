@@ -12,6 +12,7 @@ interface Labels {
   body: string
   submit: string
   pending: string
+  replyLabel: string
 }
 
 /**
@@ -52,6 +53,12 @@ export function CommentSection({ caseId, comments, labels }: { caseId: string; c
             <div key={c.id} style={{ background: '#fff', border: '1px solid rgba(12,21,18,.08)', borderRadius: 14, padding: '16px 18px' }}>
               <div style={{ fontWeight: 600, fontSize: 14, marginBottom: 6 }}>{c.author}</div>
               <div style={{ fontSize: 14, lineHeight: 1.6, color: '#3A4642', whiteSpace: 'pre-wrap' }}>{c.body}</div>
+              {c.reply && (
+                <div style={{ marginTop: 12, marginLeft: 14, paddingLeft: 14, borderLeft: '3px solid #0FA893' }}>
+                  <div style={{ fontWeight: 600, fontSize: 13, color: '#0A5049', marginBottom: 4 }}>{labels.replyLabel}</div>
+                  <div style={{ fontSize: 14, lineHeight: 1.6, color: '#3A4642', whiteSpace: 'pre-wrap' }}>{c.reply}</div>
+                </div>
+              )}
             </div>
           ))}
         </div>
