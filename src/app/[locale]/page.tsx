@@ -172,7 +172,8 @@ export default async function HomePage({ params }: { params: { locale: string } 
               }}
             >
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0A5049" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
-                <polygon points="5 3 19 12 5 21 5 3" />
+                <path d="M12 2v6M12 22a5 5 0 0 0 5-5c0-2-1-3-1-6H8c0 3-1 4-1 6a5 5 0 0 0 5 5Z" />
+                <path d="M9 8V4a3 3 0 0 1 6 0v4" />
               </svg>
             </div>
             <div>

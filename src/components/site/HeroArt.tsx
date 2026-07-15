@@ -1,8 +1,8 @@
 /**
- * HeroArt — self-contained, on-brand illustration for the home hero.
- * Oral-surgery / implantology motif (documented case + operative video),
- * drawn in the Surgery4all teal palette. No network / no external asset:
- * inline SVG so it renders offline and scales crisply.
+ * HeroArt — self-contained, modern illustration for the home hero.
+ * Oral surgery / implantology: a refined tooth + titanium implant on a
+ * mesh-gradient clinical backdrop with soft glass depth. Brand teal palette.
+ * Inline SVG — renders offline, scales crisply, no external asset.
  */
 export function HeroArt() {
   return (
@@ -10,62 +10,86 @@ export function HeroArt() {
       viewBox="0 0 800 1000"
       preserveAspectRatio="xMidYMid slice"
       role="img"
-      aria-label="Illustration : chirurgie orale et implantologie documentée"
+      aria-label="Illustration : chirurgie buccale et implantologie"
       style={{ width: '100%', height: '100%', display: 'block' }}
     >
       <defs>
-        <linearGradient id="sfaBg" x1="0" y1="0" x2="1" y2="1">
+        <linearGradient id="hgBase" x1="0.1" y1="0" x2="0.9" y2="1">
           <stop offset="0" stopColor="#0A5049" />
-          <stop offset="0.55" stopColor="#0E8C7E" />
-          <stop offset="1" stopColor="#0FA893" />
+          <stop offset="0.5" stopColor="#0E8477" />
+          <stop offset="1" stopColor="#12A18F" />
         </linearGradient>
-        <radialGradient id="sfaGlow" cx="0.72" cy="0.22" r="0.9">
-          <stop offset="0" stopColor="#4FD8C6" stopOpacity="0.55" />
-          <stop offset="0.45" stopColor="#4FD8C6" stopOpacity="0.12" />
-          <stop offset="1" stopColor="#4FD8C6" stopOpacity="0" />
+        <radialGradient id="hgGlowA" cx="0.78" cy="0.16" r="0.75">
+          <stop offset="0" stopColor="#7FF0DE" stopOpacity="0.55" />
+          <stop offset="1" stopColor="#7FF0DE" stopOpacity="0" />
         </radialGradient>
-        <linearGradient id="sfaTooth" x1="0" y1="0" x2="0" y2="1">
+        <radialGradient id="hgGlowB" cx="0.18" cy="0.92" r="0.7">
+          <stop offset="0" stopColor="#063A34" stopOpacity="0.55" />
+          <stop offset="1" stopColor="#063A34" stopOpacity="0" />
+        </radialGradient>
+        <linearGradient id="hgSweep" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stopColor="#FFFFFF" stopOpacity="0" />
+          <stop offset="0.5" stopColor="#FFFFFF" stopOpacity="0.10" />
+          <stop offset="1" stopColor="#FFFFFF" stopOpacity="0" />
+        </linearGradient>
+        <linearGradient id="hgTooth" x1="0.3" y1="0" x2="0.7" y2="1">
           <stop offset="0" stopColor="#FFFFFF" />
-          <stop offset="1" stopColor="#D9F0EB" />
+          <stop offset="0.6" stopColor="#F2FBF8" />
+          <stop offset="1" stopColor="#CFEAE3" />
         </linearGradient>
-        <linearGradient id="sfaImplant" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0" stopColor="#EAF6F3" />
-          <stop offset="1" stopColor="#A9D9CF" />
+        <linearGradient id="hgMetal" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0" stopColor="#9FC7BF" />
+          <stop offset="0.28" stopColor="#EFF8F5" />
+          <stop offset="0.5" stopColor="#C7E4DC" />
+          <stop offset="0.72" stopColor="#F3FAF8" />
+          <stop offset="1" stopColor="#93BEB5" />
         </linearGradient>
-        <filter id="sfaShadow" x="-40%" y="-40%" width="180%" height="180%">
-          <feDropShadow dx="0" dy="22" stdDeviation="26" floodColor="#04241F" floodOpacity="0.35" />
+        <radialGradient id="hgDisc" cx="0.5" cy="0.42" r="0.62">
+          <stop offset="0" stopColor="#1AB79F" stopOpacity="0.9" />
+          <stop offset="0.7" stopColor="#0B4C45" stopOpacity="0.55" />
+          <stop offset="1" stopColor="#0B4C45" stopOpacity="0" />
+        </radialGradient>
+        <filter id="hgSoft" x="-50%" y="-50%" width="200%" height="200%">
+          <feDropShadow dx="0" dy="26" stdDeviation="30" floodColor="#04241F" floodOpacity="0.40" />
         </filter>
+        <filter id="hgBlur" x="-50%" y="-50%" width="200%" height="200%">
+          <feGaussianBlur stdDeviation="18" />
+        </filter>
+        <pattern id="hgDots" width="34" height="34" patternUnits="userSpaceOnUse">
+          <circle cx="2" cy="2" r="2" fill="#FFFFFF" fillOpacity="0.07" />
+        </pattern>
       </defs>
 
-      {/* backdrop */}
-      <rect width="800" height="1000" fill="url(#sfaBg)" />
-      <rect width="800" height="1000" fill="url(#sfaGlow)" />
+      {/* layered mesh backdrop */}
+      <rect width="800" height="1000" fill="url(#hgBase)" />
+      <rect width="800" height="1000" fill="url(#hgGlowA)" />
+      <rect width="800" height="1000" fill="url(#hgGlowB)" />
+      <rect width="800" height="1000" fill="url(#hgDots)" />
+      <polygon points="0,220 800,-40 800,240 0,520" fill="url(#hgSweep)" />
 
-      {/* concentric scan rings (clinical documentation motif) */}
-      <g fill="none" stroke="#FFFFFF" strokeOpacity="0.10">
-        <circle cx="400" cy="470" r="300" />
-        <circle cx="400" cy="470" r="230" />
-        <circle cx="400" cy="470" r="160" />
-      </g>
-      <g fill="#4FD8C6" opacity="0.5">
-        <circle cx="120" cy="140" r="4" />
-        <circle cx="680" cy="120" r="5" />
-        <circle cx="700" cy="620" r="4" />
-        <circle cx="130" cy="660" r="5" />
-      </g>
-      {/* small plus marks */}
-      <g stroke="#FFFFFF" strokeOpacity="0.35" strokeWidth="3" strokeLinecap="round">
-        <path d="M150 300 h22 M161 289 v22" />
-        <path d="M648 400 h22 M659 389 v22" />
+      {/* frosted glass depth shapes */}
+      <g filter="url(#hgBlur)" opacity="0.5">
+        <rect x="70" y="150" width="150" height="150" rx="40" fill="#FFFFFF" fillOpacity="0.10" />
+        <circle cx="690" cy="760" r="90" fill="#FFFFFF" fillOpacity="0.08" />
       </g>
 
-      {/* central tooth + implant, floating on a soft disc */}
-      <circle cx="400" cy="470" r="215" fill="#063A34" opacity="0.35" />
-      <g filter="url(#sfaShadow)">
+      {/* accent ring + soft disc behind the tooth */}
+      <circle cx="400" cy="452" r="250" fill="url(#hgDisc)" />
+      <circle cx="400" cy="452" r="252" fill="none" stroke="#7FF0DE" strokeOpacity="0.45" strokeWidth="2" />
+      <path d="M400 200 a252 252 0 0 1 210 112" fill="none" stroke="#EAFFFB" strokeOpacity="0.85" strokeWidth="4" strokeLinecap="round" />
+
+      {/* fine scan rings */}
+      <g fill="none" stroke="#FFFFFF" strokeOpacity="0.08">
+        <circle cx="400" cy="452" r="188" />
+        <circle cx="400" cy="452" r="132" />
+      </g>
+
+      {/* tooth + implant */}
+      <g filter="url(#hgSoft)">
         {/* molar crown */}
         <path
-          fill="url(#sfaTooth)"
-          d="M400 300
+          fill="url(#hgTooth)"
+          d="M400 288
              c-52 0 -84 26 -104 26
              c-30 0 -52 -12 -74 6
              c-30 24 -24 84 -6 150
@@ -79,57 +103,37 @@ export function HeroArt() {
              c-22 -18 -44 -6 -74 -6
              c-20 0 -52 -26 -104 -26 Z"
         />
-        {/* crown highlight */}
-        <path
-          fill="#FFFFFF"
-          opacity="0.55"
-          d="M338 350 c22 -14 48 -20 62 -20 c-30 6 -52 22 -66 44 c-6 -10 -4 -18 4 -24 Z"
-        />
+        {/* specular highlight */}
+        <path fill="#FFFFFF" opacity="0.6" d="M330 342 c24 -18 54 -26 74 -24 c-34 4 -60 22 -74 50 c-8 -12 -6 -18 0 -26 Z" />
+        <path fill="#0C1512" opacity="0.06" d="M470 330 c26 26 30 92 10 168 c-6 22 -14 40 -22 40 c16 -70 20 -140 12 -208 Z" />
 
-        {/* gum line */}
-        <rect x="286" y="560" width="228" height="34" rx="17" fill="#0C1512" opacity="0.16" />
+        {/* gum shadow */}
+        <ellipse cx="400" cy="586" rx="120" ry="20" fill="#0C1512" opacity="0.18" />
 
-        {/* implant abutment */}
-        <path fill="url(#sfaImplant)" d="M372 578 h56 l-8 60 h-40 Z" />
-        {/* implant post with threads */}
-        <path fill="url(#sfaImplant)" d="M382 636 h36 c8 0 12 8 10 16 l-24 108 c-2 8 -14 8 -16 0 l-16 -108 c-2 -8 2 -16 10 -16 Z" />
-        <g stroke="#7FC3B7" strokeWidth="5" strokeLinecap="round" opacity="0.9">
-          <path d="M384 664 h32" />
-          <path d="M386 686 h28" />
-          <path d="M388 708 h24" />
-          <path d="M391 730 h18" />
+        {/* abutment */}
+        <path fill="url(#hgMetal)" d="M374 566 h52 l-7 56 h-38 Z" />
+        {/* titanium post */}
+        <path fill="url(#hgMetal)" d="M384 620 h32 c8 0 12 8 10 16 l-22 104 c-2 9 -14 9 -16 0 l-14 -104 c-2 -8 2 -16 10 -16 Z" />
+        <g stroke="#6FB3A7" strokeWidth="4.5" strokeLinecap="round" opacity="0.85">
+          <path d="M386 648 h28" />
+          <path d="M388 670 h24" />
+          <path d="M390 692 h20" />
+          <path d="M393 714 h14" />
         </g>
+        {/* post shine */}
+        <path d="M398 626 l-6 108" stroke="#FFFFFF" strokeOpacity="0.7" strokeWidth="3" strokeLinecap="round" />
       </g>
 
-      {/* operative-video: glassy play button */}
-      <g transform="translate(596 300)">
-        <circle r="58" fill="#0C1512" opacity="0.28" />
-        <circle r="58" fill="none" stroke="#FFFFFF" strokeOpacity="0.5" strokeWidth="2" />
-        <path d="M-16 -24 L28 0 L-16 24 Z" fill="#FFFFFF" />
+      {/* subtle accent dots */}
+      <g fill="#7FF0DE" opacity="0.6">
+        <circle cx="150" cy="470" r="5" />
+        <circle cx="655" cy="520" r="4" />
+        <circle cx="600" cy="235" r="5" />
       </g>
-
-      {/* ECG / vitals line */}
-      <path
-        d="M70 830 H250 l30 -46 30 92 34 -140 30 140 26 -46 H730"
-        fill="none"
-        stroke="#4FD8C6"
-        strokeWidth="4"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        opacity="0.9"
-      />
-      <text
-        x="70"
-        y="905"
-        fill="#EAFBF7"
-        opacity="0.85"
-        fontFamily="'Space Grotesk', sans-serif"
-        fontSize="26"
-        fontWeight="600"
-        letterSpacing="0.04em"
-      >
-        CAS DOCUMENTÉ · PROTOCOLE
-      </text>
+      <g stroke="#FFFFFF" strokeOpacity="0.35" strokeWidth="3" strokeLinecap="round">
+        <path d="M170 360 h20 M180 350 v20" />
+        <path d="M636 640 h20 M646 630 v20" />
+      </g>
     </svg>
   )
 }
