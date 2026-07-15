@@ -1,16 +1,273 @@
 {
+  "nav": {
+    "accueil": "Home",
+    "cases": "Clinical cases",
+    "publications": "Publications",
+    "blog": "Blog",
+    "pricing": "Subscriptions",
+    "about": "The practitioner",
+    "subscribe": "Subscribe",
+    "adminTitle": "Admin area"
+  },
   "home": {
     "hero": {
-      "title": "Your smile, our priority",
-      "subtitle": "Modern dental clinic: general care, aesthetics and implantology in a calm setting.",
-      "cta": "Book an appointment",
-      "ctaSecondary": "Our services"
+      "badge": "Oral surgery & implantology · real cases",
+      "titleLine1": "Dental surgery,",
+      "titleLine2": "shown without filters.",
+      "subtitle": "Photos and videos of authentic surgical cases, detailed protocols and scientific publications. Some content is freely accessible — the full library is reserved for subscribers.",
+      "ctaCases": "Explore the cases",
+      "ctaPricing": "See subscriptions"
     },
-    "services": {
-      "title": "Our services",
-      "care": { "title": "General care", "desc": "Scaling, cavities, prevention and regular follow-up." },
-      "aesthetic": { "title": "Cosmetic dentistry", "desc": "Whitening, veneers and smile alignment." },
-      "implant": { "title": "Implantology", "desc": "Implants and prosthetics to restore a full set of teeth." }
+    "stats": {
+      "casesLabel": "Documented cases",
+      "casesCount": "240+",
+      "publicationsLabel": "Publications",
+      "publicationsCount": "38",
+      "practitionersLabel": "Subscribed practitioners",
+      "practitionersCount": "5,200"
+    },
+    "specialties": [
+      "Implantology",
+      "Bone grafting",
+      "Complex extraction",
+      "Sinus lift",
+      "Tissue regeneration",
+      "Guided surgery",
+      "Periodontology"
+    ],
+    "recent": {
+      "eyebrow": "Recent cases",
+      "title": "Latest published cases",
+      "seeAll": "See all →"
+    },
+    "docsTeaser": {
+      "eyebrow": "Scientific library",
+      "title": "Evidence-based protocols",
+      "body": "Articles, systematic reviews and downloadable technical sheets. Read the summaries for free, unlock the full PDFs with a subscription.",
+      "cta": "Browse publications"
+    },
+    "testimonialsTitle": "They follow our cases",
+    "testimonials": [
+      {
+        "name": "Dr. Claire D.",
+        "role": "Dental surgeon",
+        "initial": "C",
+        "text": "A rare educational resource. The narrated videos help me refine my protocols."
+      },
+      {
+        "name": "Marc T.",
+        "role": "Patient",
+        "initial": "M",
+        "text": "Seeing real cases explained completely reassured me before my procedure."
+      },
+      {
+        "name": "Inès B.",
+        "role": "Dental student",
+        "initial": "I",
+        "text": "The best course companion I have found. Concrete and up to date."
+      }
+    ],
+    "finalCta": {
+      "title": "Access the full case library",
+      "body": "Narrated videos, complete PDFs and new cases every week. No commitment.",
+      "button": "Choose my subscription"
     }
+  },
+  "cases": {
+    "eyebrow": "Clinical gallery",
+    "title": "Surgery cases",
+    "subtitle": "Photos and videos of real procedures. Sensitive content is blurred by default — click to reveal.",
+    "warning": "Medical content intended for an informed audience",
+    "chips": [
+      "All",
+      "Implantology",
+      "Bone grafting",
+      "Extraction",
+      "Sinus lift",
+      "Periodontology"
+    ]
+  },
+  "caseCard": {
+    "video": "Video",
+    "photo": "Photo",
+    "premium": "Premium",
+    "free": "Free",
+    "lockedTitle": "Subscribers only",
+    "lockedCta": "Unlock access →",
+    "sensitiveTitle": "Sensitive content",
+    "sensitiveHint": "Click to reveal"
+  },
+  "docs": {
+    "eyebrow": "Publications",
+    "title": "Scientific documents",
+    "subtitle": "Summaries freely accessible. Full PDFs and protocol sheets reserved for subscribers.",
+    "download": "Download",
+    "premiumPdf": "Premium PDF"
+  },
+  "blog": {
+    "eyebrow": "News",
+    "title": "The blog"
+  },
+  "pricing": {
+    "eyebrow": "Subscriptions",
+    "title": "Choose your access",
+    "subtitle": "Start for free. Go premium for the full library of videos and documents.",
+    "monthly": "Monthly",
+    "annual": "Annual",
+    "annualDiscount": "−20%",
+    "footnote": "Secure payment · Cancel anytime · VAT included",
+    "plans": {
+      "free": {
+        "name": "Discovery",
+        "period": "Free",
+        "features": [
+          "Freely accessible cases",
+          "Publication summaries",
+          "Full blog access",
+          "Monthly newsletter"
+        ],
+        "cta": "Get started"
+      },
+      "pro": {
+        "name": "Practitioner",
+        "tag": "Most popular",
+        "periodMonthly": "/month",
+        "periodAnnual": "/month · billed annually",
+        "features": [
+          "Everything in Discovery",
+          "All narrated videos",
+          "Downloadable full PDFs",
+          "New cases every week",
+          "Protocol sheets"
+        ],
+        "cta": "Subscribe"
+      },
+      "inst": {
+        "name": "Institution",
+        "periodMonthly": "/month",
+        "periodAnnual": "/month · billed annually",
+        "features": [
+          "Everything in Practitioner",
+          "Up to 10 accounts",
+          "Student educational access",
+          "Priority support",
+          "Centralized billing"
+        ],
+        "cta": "Contact us"
+      }
+    }
+  },
+  "about": {
+    "eyebrow": "The practitioner",
+    "name": "Dr Sghaier Jihed",
+    "role": "Dental surgeon · Oral surgery & implantology",
+    "bio1": "A specialist in oral surgery and implantology, I document my procedures to offer patients transparent information and colleagues concrete, practice-based educational material.",
+    "bio2": "Every published case includes the clinical context, the surgical protocol and the post-operative follow-up.",
+    "stats": {
+      "yearsValue": "15 years",
+      "yearsLabel": "in practice",
+      "implantsValue": "3,000+",
+      "implantsLabel": "implants placed"
+    },
+    "contact": {
+      "title": "Book an appointment",
+      "body": "A question, a second opinion, a collaboration request? Write to us.",
+      "phone": "+33 (0)1 00 00 00 00",
+      "email": "contact@surgeryforall.fr",
+      "location": "Practice — Paris",
+      "namePlaceholder": "Full name",
+      "emailPlaceholder": "Email",
+      "messagePlaceholder": "Your message",
+      "submit": "Send request",
+      "success": "Your request has been sent. We will get back to you shortly.",
+      "error": "An error occurred. Please try again."
+    }
+  },
+  "admin": {
+    "loginTitle": "Admin area",
+    "loginSubtitle": "Manage cases, documents and subscribers.",
+    "userPlaceholder": "Username",
+    "passwordPlaceholder": "Password",
+    "loginButton": "Sign in",
+    "loginError": "Incorrect username or password.",
+    "dashboardEyebrow": "Dashboard",
+    "dashboardTitle": "Administration",
+    "logout": "Sign out",
+    "stats": {
+      "casesPublished": "Published cases",
+      "publications": "Publications",
+      "activeSubscribers": "Active subscribers",
+      "activeSubscribersValue": "5,214",
+      "revenue": "Revenue / month",
+      "revenueValue": "€18.7k"
+    },
+    "tabs": {
+      "cases": "Clinical cases",
+      "docs": "Documents",
+      "posts": "Articles",
+      "subs": "Subscribers"
+    },
+    "addCase": {
+      "heading": "+ Add a case",
+      "titlePlaceholder": "Case title",
+      "specialtyLabel": "Specialty",
+      "typePhoto": "Photo",
+      "typeVideo": "Video",
+      "descPlaceholder": "Clinical description",
+      "premiumLabel": "Subscribers only (premium)",
+      "sensitiveLabel": "Sensitive content (blurred)",
+      "publish": "Publish case"
+    },
+    "addDoc": {
+      "heading": "+ Add a document",
+      "titlePlaceholder": "Publication title",
+      "journalPlaceholder": "Journal / source",
+      "yearPlaceholder": "Year",
+      "premiumLabel": "PDF reserved for subscribers",
+      "publish": "Publish document"
+    },
+    "addPost": {
+      "heading": "+ Add an article",
+      "titlePlaceholder": "Article title",
+      "categoryPlaceholder": "Category",
+      "excerptPlaceholder": "Excerpt / summary",
+      "publish": "Publish article"
+    },
+    "delete": "Delete",
+    "subsTable": {
+      "subscriber": "Subscriber",
+      "plan": "Plan",
+      "since": "Since",
+      "status": "Status"
+    },
+    "statuses": {
+      "active": "Active",
+      "free": "Free",
+      "paused": "Paused"
+    }
+  },
+  "footer": {
+    "tagline": "Dental surgery documentation — real cases, protocols and publications for patients and practitioners.",
+    "contentTitle": "Content",
+    "offerTitle": "Offer",
+    "legalTitle": "Legal",
+    "links": {
+      "cases": "Clinical cases",
+      "publications": "Publications",
+      "blog": "Blog",
+      "subscriptions": "Subscriptions",
+      "about": "The practitioner",
+      "admin": "Admin area",
+      "legalNotice": "Legal notice",
+      "privacy": "Privacy",
+      "terms": "Terms of use"
+    },
+    "copyright": "© 2026 Surgery4all · Surgical content is intended for educational and medical purposes."
+  },
+  "common": {
+    "loading": "Loading…",
+    "close": "Close",
+    "cancel": "Cancel",
+    "back": "Back"
   }
 }

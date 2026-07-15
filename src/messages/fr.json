@@ -1,16 +1,273 @@
 {
+  "nav": {
+    "accueil": "Accueil",
+    "cases": "Cas cliniques",
+    "publications": "Publications",
+    "blog": "Blog",
+    "pricing": "Abonnements",
+    "about": "Le praticien",
+    "subscribe": "S’abonner",
+    "adminTitle": "Espace administrateur"
+  },
   "home": {
     "hero": {
-      "title": "Votre sourire, notre priorité",
-      "subtitle": "Cabinet dentaire moderne : soins, esthétique et implantologie dans un cadre serein.",
-      "cta": "Prendre rendez-vous",
-      "ctaSecondary": "Nos services"
+      "badge": "Chirurgie orale & implantologie · cas réels",
+      "titleLine1": "La chirurgie dentaire,",
+      "titleLine2": "montrée sans filtre.",
+      "subtitle": "Photos et vidéos de cas opératoires authentiques, protocoles détaillés et publications scientifiques. Une partie en accès libre — l’intégralité réservée aux abonnés.",
+      "ctaCases": "Explorer les cas",
+      "ctaPricing": "Voir les abonnements"
     },
-    "services": {
-      "title": "Nos services",
-      "care": { "title": "Soins généraux", "desc": "Détartrage, caries, prévention et suivi régulier." },
-      "aesthetic": { "title": "Esthétique dentaire", "desc": "Blanchiment, facettes et alignement du sourire." },
-      "implant": { "title": "Implantologie", "desc": "Implants et prothèses pour retrouver une dentition complète." }
+    "stats": {
+      "casesLabel": "Cas documentés",
+      "casesCount": "240+",
+      "publicationsLabel": "Publications",
+      "publicationsCount": "38",
+      "practitionersLabel": "Praticiens abonnés",
+      "practitionersCount": "5 200"
+    },
+    "specialties": [
+      "Implantologie",
+      "Greffe osseuse",
+      "Extraction complexe",
+      "Sinus lift",
+      "Régénération tissulaire",
+      "Chirurgie guidée",
+      "Parodontologie"
+    ],
+    "recent": {
+      "eyebrow": "Cas récents",
+      "title": "Derniers cas publiés",
+      "seeAll": "Tout voir →"
+    },
+    "docsTeaser": {
+      "eyebrow": "Bibliothèque scientifique",
+      "title": "Des protocoles fondés sur la preuve",
+      "body": "Articles, revues systématiques et fiches techniques téléchargeables. Consultez les résumés gratuitement, débloquez les PDF complets avec un abonnement.",
+      "cta": "Parcourir les publications"
+    },
+    "testimonialsTitle": "Ils suivent nos cas",
+    "testimonials": [
+      {
+        "name": "Dr. Claire D.",
+        "role": "Chirurgien-dentiste",
+        "initial": "C",
+        "text": "Une ressource pédagogique rare. Les vidéos commentées m’aident à affiner mes protocoles."
+      },
+      {
+        "name": "Marc T.",
+        "role": "Patient",
+        "initial": "M",
+        "text": "Voir des cas réels expliqués m’a totalement rassuré avant mon intervention."
+      },
+      {
+        "name": "Inès B.",
+        "role": "Étudiante en dentaire",
+        "initial": "I",
+        "text": "Le meilleur complément de cours que j’aie trouvé. Concret et à jour."
+      }
+    ],
+    "finalCta": {
+      "title": "Accédez à l’intégralité des cas",
+      "body": "Vidéos commentées, PDF complets et nouveaux cas chaque semaine. Sans engagement.",
+      "button": "Choisir mon abonnement"
     }
+  },
+  "cases": {
+    "eyebrow": "Galerie clinique",
+    "title": "Cas de chirurgie",
+    "subtitle": "Photos et vidéos d’interventions réelles. Les contenus sensibles sont floutés par défaut — cliquez pour révéler.",
+    "warning": "Contenu médical destiné à un public averti",
+    "chips": [
+      "Tous",
+      "Implantologie",
+      "Greffe osseuse",
+      "Extraction",
+      "Sinus lift",
+      "Parodontologie"
+    ]
+  },
+  "caseCard": {
+    "video": "Vidéo",
+    "photo": "Photo",
+    "premium": "Premium",
+    "free": "Gratuit",
+    "lockedTitle": "Réservé aux abonnés",
+    "lockedCta": "Débloquer l’accès →",
+    "sensitiveTitle": "Contenu sensible",
+    "sensitiveHint": "Cliquez pour afficher"
+  },
+  "docs": {
+    "eyebrow": "Publications",
+    "title": "Documents scientifiques",
+    "subtitle": "Résumés en accès libre. PDF complets et fiches protocolaires réservés aux abonnés.",
+    "download": "Télécharger",
+    "premiumPdf": "PDF premium"
+  },
+  "blog": {
+    "eyebrow": "Actualités",
+    "title": "Le blog"
+  },
+  "pricing": {
+    "eyebrow": "Abonnements",
+    "title": "Choisissez votre accès",
+    "subtitle": "Commencez gratuitement. Passez au premium pour l’intégralité des vidéos et documents.",
+    "monthly": "Mensuel",
+    "annual": "Annuel",
+    "annualDiscount": "−20%",
+    "footnote": "Paiement sécurisé · Résiliable à tout moment · TVA incluse",
+    "plans": {
+      "free": {
+        "name": "Découverte",
+        "period": "Gratuit",
+        "features": [
+          "Cas en accès libre",
+          "Résumés des publications",
+          "Blog complet",
+          "Newsletter mensuelle"
+        ],
+        "cta": "Commencer"
+      },
+      "pro": {
+        "name": "Praticien",
+        "tag": "Populaire",
+        "periodMonthly": "/mois",
+        "periodAnnual": "/mois · facturé annuellement",
+        "features": [
+          "Tout Découverte",
+          "Toutes les vidéos commentées",
+          "PDF complets téléchargeables",
+          "Nouveaux cas chaque semaine",
+          "Fiches protocolaires"
+        ],
+        "cta": "S’abonner"
+      },
+      "inst": {
+        "name": "Institution",
+        "periodMonthly": "/mois",
+        "periodAnnual": "/mois · facturé annuellement",
+        "features": [
+          "Tout Praticien",
+          "Jusqu’à 10 comptes",
+          "Accès pédagogique étudiants",
+          "Support prioritaire",
+          "Facturation centralisée"
+        ],
+        "cta": "Nous contacter"
+      }
+    }
+  },
+  "about": {
+    "eyebrow": "Le praticien",
+    "name": "Dr Sghaier Jihed",
+    "role": "Chirurgien-dentiste · Chirurgie orale & implantologie",
+    "bio1": "Spécialiste en chirurgie orale et implantologie, je documente mes interventions pour offrir aux patients une information transparente et aux confrères un support pédagogique concret, fondé sur la pratique quotidienne.",
+    "bio2": "Chaque cas publié inclut le contexte clinique, le protocole opératoire et le suivi post-chirurgical.",
+    "stats": {
+      "yearsValue": "15 ans",
+      "yearsLabel": "d’exercice",
+      "implantsValue": "3 000+",
+      "implantsLabel": "implants posés"
+    },
+    "contact": {
+      "title": "Prendre rendez-vous",
+      "body": "Une question, un second avis, une demande de collaboration ? Écrivez-nous.",
+      "phone": "+33 (0)1 00 00 00 00",
+      "email": "contact@surgeryforall.fr",
+      "location": "Cabinet — Paris",
+      "namePlaceholder": "Nom complet",
+      "emailPlaceholder": "E-mail",
+      "messagePlaceholder": "Votre message",
+      "submit": "Envoyer la demande",
+      "success": "Votre demande a bien été envoyée. Nous vous répondrons rapidement.",
+      "error": "Une erreur est survenue. Merci de réessayer."
+    }
+  },
+  "admin": {
+    "loginTitle": "Espace administrateur",
+    "loginSubtitle": "Gestion des cas, documents et abonnés.",
+    "userPlaceholder": "Identifiant",
+    "passwordPlaceholder": "Mot de passe",
+    "loginButton": "Se connecter",
+    "loginError": "Identifiant ou mot de passe incorrect.",
+    "dashboardEyebrow": "Tableau de bord",
+    "dashboardTitle": "Administration",
+    "logout": "Déconnexion",
+    "stats": {
+      "casesPublished": "Cas publiés",
+      "publications": "Publications",
+      "activeSubscribers": "Abonnés actifs",
+      "activeSubscribersValue": "5 214",
+      "revenue": "Revenus / mois",
+      "revenueValue": "18,7 k€"
+    },
+    "tabs": {
+      "cases": "Cas cliniques",
+      "docs": "Documents",
+      "posts": "Articles",
+      "subs": "Abonnés"
+    },
+    "addCase": {
+      "heading": "＋ Ajouter un cas",
+      "titlePlaceholder": "Titre du cas",
+      "specialtyLabel": "Spécialité",
+      "typePhoto": "Photo",
+      "typeVideo": "Vidéo",
+      "descPlaceholder": "Description clinique",
+      "premiumLabel": "Réservé aux abonnés (premium)",
+      "sensitiveLabel": "Contenu sensible (flou)",
+      "publish": "Publier le cas"
+    },
+    "addDoc": {
+      "heading": "＋ Ajouter un document",
+      "titlePlaceholder": "Titre de la publication",
+      "journalPlaceholder": "Revue / source",
+      "yearPlaceholder": "Année",
+      "premiumLabel": "PDF réservé aux abonnés",
+      "publish": "Publier le document"
+    },
+    "addPost": {
+      "heading": "＋ Ajouter un article",
+      "titlePlaceholder": "Titre de l’article",
+      "categoryPlaceholder": "Catégorie",
+      "excerptPlaceholder": "Extrait / résumé",
+      "publish": "Publier l’article"
+    },
+    "delete": "Supprimer",
+    "subsTable": {
+      "subscriber": "Abonné",
+      "plan": "Formule",
+      "since": "Depuis",
+      "status": "Statut"
+    },
+    "statuses": {
+      "active": "Actif",
+      "free": "Gratuit",
+      "paused": "En pause"
+    }
+  },
+  "footer": {
+    "tagline": "Documentation chirurgicale dentaire — cas réels, protocoles et publications pour patients et praticiens.",
+    "contentTitle": "Contenu",
+    "offerTitle": "Offre",
+    "legalTitle": "Légal",
+    "links": {
+      "cases": "Cas cliniques",
+      "publications": "Publications",
+      "blog": "Blog",
+      "subscriptions": "Abonnements",
+      "about": "Le praticien",
+      "admin": "Espace admin",
+      "legalNotice": "Mentions légales",
+      "privacy": "Confidentialité",
+      "terms": "CGU"
+    },
+    "copyright": "© 2026 Surgery4all · Les contenus chirurgicaux sont destinés à un usage pédagogique et médical."
+  },
+  "common": {
+    "loading": "Chargement…",
+    "close": "Fermer",
+    "cancel": "Annuler",
+    "back": "Retour"
   }
 }
