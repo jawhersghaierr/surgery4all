@@ -2,6 +2,7 @@
 
 import { useTranslations } from 'next-intl'
 import { Link, usePathname } from '@/navigation'
+import { BrandMark } from './BrandMark'
 
 const linkStyle = { cursor: 'pointer', color: '#566962', textDecoration: 'none' } as const
 
@@ -19,12 +20,10 @@ export function Footer() {
       >
         <div>
           <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 16 }}>
-            <div style={{ width: 30, height: 30, borderRadius: 9, background: '#0FA893', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth={2.4} strokeLinecap="round" strokeLinejoin="round">
-                <path d="M12 2v6M12 22a5 5 0 0 0 5-5c0-2-1-3-1-6H8c0 3-1 4-1 6a5 5 0 0 0 5 5Z" />
-              </svg>
-            </div>
-            <span style={{ fontFamily: "'Space Grotesk'", fontWeight: 700, fontSize: '16px' }}>Surgery4all</span>
+            <BrandMark size={30} />
+            <span style={{ fontFamily: "'Space Grotesk'", fontWeight: 700, fontSize: '16px' }}>
+              Surgery<span style={{ color: '#0FA893' }}>4</span>all
+            </span>
           </div>
           <p style={{ fontSize: '14px', lineHeight: 1.6, color: '#566962', maxWidth: 280 }}>{t('tagline')}</p>
         </div>

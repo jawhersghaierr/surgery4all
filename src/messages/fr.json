@@ -49,6 +49,10 @@
       "body": "Articles, revues systématiques et fiches techniques téléchargeables. Consultez les résumés gratuitement, débloquez les PDF complets avec un abonnement.",
       "cta": "Parcourir les publications"
     },
+    "sponsors": {
+      "eyebrow": "Partenaires",
+      "title": "Ils nous soutiennent"
+    },
     "testimonialsTitle": "Ils suivent nos cas",
     "testimonials": [
       {
@@ -209,7 +213,16 @@
       "cases": "Cas cliniques",
       "docs": "Documents",
       "posts": "Articles",
-      "subs": "Abonnés"
+      "subs": "Abonnés",
+      "sponsors": "Sponsors"
+    },
+    "addSponsor": {
+      "heading": "＋ Ajouter un sponsor",
+      "namePlaceholder": "Nom du sponsor",
+      "logoUrlPlaceholder": "URL du logo (optionnel)",
+      "urlPlaceholder": "Lien du site (optionnel)",
+      "publish": "Ajouter le sponsor",
+      "noUrl": "Sans lien"
     },
     "addCase": {
       "heading": "＋ Ajouter un cas",

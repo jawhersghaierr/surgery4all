@@ -30,6 +30,13 @@ export interface Post {
   date: string
 }
 
+export interface Sponsor {
+  id: string
+  name: string
+  logo_url: string | null
+  url: string | null
+}
+
 export type SubStatus = 'active' | 'free' | 'paused'
 
 export interface Subscriber {

@@ -1,4 +1,4 @@
-import type { Case, Doc, Post, Subscriber } from '@/lib/types'
+import type { Case, Doc, Post, Sponsor, Subscriber } from '@/lib/types'
 
 export const seedCases: Case[] = [
   {
@@ -167,6 +167,15 @@ export const seedPosts: Post[] = [
     cover_url: null,
     date: '12 juin 2026',
   },
+]
+
+export const seedSponsors: Sponsor[] = [
+  { id: 'sp1', name: 'Straumann', logo_url: null, url: null },
+  { id: 'sp2', name: 'Nobel Biocare', logo_url: null, url: null },
+  { id: 'sp3', name: 'Dentsply Sirona', logo_url: null, url: null },
+  { id: 'sp4', name: 'Geistlich', logo_url: null, url: null },
+  { id: 'sp5', name: 'MIS Implants', logo_url: null, url: null },
+  { id: 'sp6', name: 'BioHorizons', logo_url: null, url: null },
 ]
 
 export const seedSubscribers: Subscriber[] = [

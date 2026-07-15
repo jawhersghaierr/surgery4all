@@ -42,3 +42,11 @@ create table if not exists subscribers (
   status text not null check (status in ('active', 'free', 'paused')),
   created_at timestamptz default now()
 );
+
+create table if not exists sponsors (
+  id uuid default gen_random_uuid() primary key,
+  name text not null,
+  logo_url text,
+  url text,
+  created_at timestamptz default now()
+);

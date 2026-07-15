@@ -4,6 +4,7 @@ import { useState, type CSSProperties } from 'react'
 import { useTranslations } from 'next-intl'
 import { Link, usePathname } from '@/navigation'
 import { LocaleSwitch } from './LocaleSwitch'
+import { BrandMark } from './BrandMark'
 
 type NavKey = 'accueil' | 'cases' | 'publications' | 'blog' | 'pricing' | 'about'
 
@@ -80,23 +81,7 @@ export function Header() {
           onClick={() => setMenuOpen(false)}
           style={{ display: 'flex', alignItems: 'center', gap: 11, cursor: 'pointer', flexShrink: 0, textDecoration: 'none' }}
         >
-          <div
-            style={{
-              width: 34,
-              height: 34,
-              borderRadius: 10,
-              background: '#0FA893',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              boxShadow: '0 6px 16px -4px rgba(15,168,147,.6)',
-            }}
-          >
-            <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth={2.4} strokeLinecap="round" strokeLinejoin="round">
-              <path d="M12 2v6M12 22a5 5 0 0 0 5-5c0-2-1-3-1-6H8c0 3-1 4-1 6a5 5 0 0 0 5 5Z" />
-              <path d="M9 8V4a3 3 0 0 1 6 0v4" />
-            </svg>
-          </div>
+          <BrandMark size={36} />
           <div style={{ lineHeight: 1.05 }}>
             <div style={{ fontFamily: "'Space Grotesk'", fontWeight: 700, fontSize: '18px', letterSpacing: '-.02em', color: '#0C1512' }}>
               Surgery<span style={{ color: '#0FA893' }}>4</span>all

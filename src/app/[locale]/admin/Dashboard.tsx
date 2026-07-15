@@ -4,11 +4,21 @@ import { useRef, useState, type CSSProperties, type FormEvent, type ReactNode } 
 import { useTranslations } from 'next-intl'
 import { toast } from 'sonner'
 import { useRouter } from '@/navigation'
-import type { Case, Doc, Post, Subscriber } from '@/lib/types'
+import type { Case, Doc, Post, Sponsor, Subscriber } from '@/lib/types'
 import { SPECIALTIES } from '@/lib/types'
 import { typeText } from '@/components/site/caseCardLogic'
 import { tabButtonStyle, premiumSuffix, statusPillStyle, type AdminTab } from './adminLogic'
-import { logout, addCase, deleteCase, addDocument, deleteDocument, addPost, deletePost } from './actions'
+import {
+  logout,
+  addCase,
+  deleteCase,
+  addDocument,
+  deleteDocument,
+  addPost,
+  deletePost,
+  addSponsor,
+  deleteSponsor,
+} from './actions'
 
 const adminInput: CSSProperties = {
   height: 44,
@@ -136,6 +146,7 @@ interface DashboardProps {
   docs: Doc[]
   posts: Post[]
   subscribers: Subscriber[]
+  sponsors: Sponsor[]
 }
 
 /**
@@ -147,7 +158,7 @@ interface DashboardProps {
  * mutation ends in `router.refresh()` so the freshly revalidated server data
  * flows back down through `page.tsx`.
  */
-export function Dashboard({ cases, docs, posts, subscribers }: DashboardProps) {
+export function Dashboard({ cases, docs, posts, subscribers, sponsors }: DashboardProps) {
   const t = useTranslations('admin')
   const tCase = useTranslations('caseCard')
   const tDocs = useTranslations('docs')
@@ -158,6 +169,7 @@ export function Dashboard({ cases, docs, posts, subscribers }: DashboardProps) {
   const [caseBusy, setCaseBusy] = useState(false)
   const [docBusy, setDocBusy] = useState(false)
   const [postBusy, setPostBusy] = useState(false)
+  const [sponsorBusy, setSponsorBusy] = useState(false)
 
   const mediaFileRef = useRef<HTMLInputElement>(null)
   const mediaUrlRef = useRef<HTMLInputElement>(null)
@@ -254,6 +266,29 @@ export function Dashboard({ cases, docs, posts, subscribers }: DashboardProps) {
     router.refresh()
   }
 
+  async function handleAddSponsor(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault()
+    const form = e.currentTarget
+    setSponsorBusy(true)
+    const result = await addSponsor(new FormData(form))
+    setSponsorBusy(false)
+    if (result?.error) {
+      toast.error(result.error)
+      return
+    }
+    form.reset()
+    router.refresh()
+  }
+
+  async function handleDeleteSponsor(id: string) {
+    const result = await deleteSponsor(id)
+    if (result?.error) {
+      toast.error(result.error)
+      return
+    }
+    router.refresh()
+  }
+
   const deleteLabel = t('delete')
 
   return (
@@ -308,6 +343,9 @@ export function Dashboard({ cases, docs, posts, subscribers }: DashboardProps) {
         </button>
         <button type="button" onClick={() => setTab('subs')} style={tabButtonStyle(tab === 'subs')}>
           {t('tabs.subs')}
+        </button>
+        <button type="button" onClick={() => setTab('sponsors')} style={tabButtonStyle(tab === 'sponsors')}>
+          {t('tabs.sponsors')}
         </button>
       </div>
 
@@ -502,6 +540,49 @@ export function Dashboard({ cases, docs, posts, subscribers }: DashboardProps) {
               </div>
             </div>
           ))}
+        </div>
+      )}
+
+      {/* Tab: Sponsors */}
+      {tab === 'sponsors' && (
+        <div className="sfa-admin2" style={{ display: 'grid', gridTemplateColumns: '340px 1fr', gap: 26, alignItems: 'start' }}>
+          <div style={panelStyle}>
+            <h3 style={{ fontFamily: "'Space Grotesk'", fontWeight: 600, fontSize: 17, marginBottom: 18 }}>{t('addSponsor.heading')}</h3>
+            <form onSubmit={handleAddSponsor} style={{ display: 'flex', flexDirection: 'column', gap: 11 }}>
+              <input name="name" placeholder={t('addSponsor.namePlaceholder')} required style={adminInput} />
+              <input name="logo_url" placeholder={t('addSponsor.logoUrlPlaceholder')} style={adminInput} />
+              <input name="url" placeholder={t('addSponsor.urlPlaceholder')} style={adminInput} />
+              <button type="submit" disabled={sponsorBusy} style={{ ...adminAddBtn, opacity: sponsorBusy ? 0.7 : 1 }}>
+                {t('addSponsor.publish')}
+              </button>
+            </form>
+          </div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+            {sponsors.map((sp) => (
+              <div key={sp.id} style={rowStyle}>
+                <RowIcon background="rgba(15,168,147,.2)">
+                  {sp.logo_url ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img src={sp.logo_url} alt={sp.name} style={{ maxWidth: 30, maxHeight: 30, objectFit: 'contain' }} />
+                  ) : (
+                    <span style={{ fontFamily: "'Space Grotesk'", fontWeight: 700, fontSize: 15, color: '#4FD8C6' }}>
+                      {sp.name
+                        .split(/\s+/)
+                        .slice(0, 2)
+                        .map((w) => w[0])
+                        .join('')
+                        .toUpperCase()}
+                    </span>
+                  )}
+                </RowIcon>
+                <div style={{ minWidth: 0, flex: 1 }}>
+                  <div style={rowTitleStyle}>{sp.name}</div>
+                  <div style={rowSubtitleStyle}>{sp.url || t('addSponsor.noUrl')}</div>
+                </div>
+                <DeleteButton label={deleteLabel} onClick={() => handleDeleteSponsor(sp.id)} />
+              </div>
+            ))}
+          </div>
         </div>
       )}
     </div>

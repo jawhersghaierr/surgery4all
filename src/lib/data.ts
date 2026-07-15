@@ -1,6 +1,6 @@
 import { supabase } from './supabase'
-import { seedCases, seedDocs, seedPosts, seedSubscribers } from './seed'
-import type { Case, Doc, Post, Subscriber } from './types'
+import { seedCases, seedDocs, seedPosts, seedSponsors, seedSubscribers } from './seed'
+import type { Case, Doc, Post, Sponsor, Subscriber } from './types'
 
 export function isBackendConfigured() {
   return !!process.env.NEXT_PUBLIC_SUPABASE_URL && !!process.env.SUPABASE_SERVICE_ROLE_KEY
@@ -20,4 +20,5 @@ async function q<T>(table: string, seed: T[], order = 'created_at'): Promise<T[]
 export const getCases = () => q<Case>('cases', seedCases)
 export const getDocuments = () => q<Doc>('documents', seedDocs)
 export const getPosts = () => q<Post>('posts', seedPosts, 'published_at')
+export const getSponsors = () => q<Sponsor>('sponsors', seedSponsors)
 export const getSubscribers = () => q<Subscriber>('subscribers', seedSubscribers)

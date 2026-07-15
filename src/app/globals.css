@@ -43,12 +43,14 @@
     .sfa-h1{font-size:42px!important}
     .sfa-g2dark,.sfa-about{grid-template-columns:1fr!important;gap:34px!important}
     .sfa-g3{grid-template-columns:1fr 1fr!important}
+    .sfa-sponsors{grid-template-columns:repeat(3,1fr)!important}
     .sfa-stat4{grid-template-columns:1fr 1fr!important}
     .sfa-admin2{grid-template-columns:1fr!important}
     .sfa-footer{grid-template-columns:1fr 1fr!important;gap:30px!important}
   }
   @media (max-width:560px){
     .sfa-g3,.sfa-g2{grid-template-columns:1fr!important}
+    .sfa-sponsors{grid-template-columns:1fr 1fr!important}
     .sfa-footer{grid-template-columns:1fr!important}
     .sfa-h1{font-size:32px!important}
     .sfa-about{gap:26px!important}

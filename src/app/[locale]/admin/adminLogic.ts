@@ -7,7 +7,7 @@ import type { SubStatus } from '@/lib/types'
  * DOM/React renderer. `Dashboard.tsx` wires these to `useTranslations('admin')`.
  */
 
-export type AdminTab = 'cases' | 'docs' | 'posts' | 'subs'
+export type AdminTab = 'cases' | 'docs' | 'posts' | 'subs' | 'sponsors'
 
 /** Port of `atab()` (HANDOFF lines 566-571): active vs inactive tab-strip button style. */
 export function tabButtonStyle(active: boolean): CSSProperties {

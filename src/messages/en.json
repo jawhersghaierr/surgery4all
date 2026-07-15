@@ -49,6 +49,10 @@
       "body": "Articles, systematic reviews and downloadable technical sheets. Read the summaries for free, unlock the full PDFs with a subscription.",
       "cta": "Browse publications"
     },
+    "sponsors": {
+      "eyebrow": "Partners",
+      "title": "They support us"
+    },
     "testimonialsTitle": "They follow our cases",
     "testimonials": [
       {
@@ -209,7 +213,16 @@
       "cases": "Clinical cases",
       "docs": "Documents",
       "posts": "Articles",
-      "subs": "Subscribers"
+      "subs": "Subscribers",
+      "sponsors": "Sponsors"
+    },
+    "addSponsor": {
+      "heading": "＋ Add a sponsor",
+      "namePlaceholder": "Sponsor name",
+      "logoUrlPlaceholder": "Logo URL (optional)",
+      "urlPlaceholder": "Website link (optional)",
+      "publish": "Add sponsor",
+      "noUrl": "No link"
     },
     "addCase": {
       "heading": "+ Add a case",

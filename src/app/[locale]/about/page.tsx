@@ -15,7 +15,7 @@ export default async function AboutPage({ params }: { params: { locale: string }
         style={{ display: 'grid', gridTemplateColumns: '.8fr 1.2fr', gap: 48, alignItems: 'start', marginBottom: 64 }}
       >
         <div style={{ position: 'relative', aspectRatio: '3/4', borderRadius: 22, overflow: 'hidden', boxShadow: '0 24px 60px -22px rgba(12,21,18,.35)' }}>
-          <ImageSlot placeholder={t('portraitPlaceholder')} />
+          <ImageSlot src="/practitioner.jpg" placeholder={t('portraitPlaceholder')} />
         </div>
         <div>
           <div style={{ marginBottom: 12, fontSize: 13, fontWeight: 600, color: '#0FA893', letterSpacing: '.04em', textTransform: 'uppercase' }}>

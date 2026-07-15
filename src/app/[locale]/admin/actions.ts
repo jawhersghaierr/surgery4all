@@ -161,3 +161,29 @@ export async function deletePost(id: string): Promise<ActionResult> {
   revalidatePath('/', 'layout')
   return { ok: true }
 }
+
+export async function addSponsor(formData: FormData): Promise<ActionResult> {
+  const guard = await requireAdmin()
+  if (guard) return guard
+
+  const { error } = await supabase.from('sponsors').insert({
+    name: str(formData, 'name'),
+    logo_url: nullableStr(formData, 'logo_url'),
+    url: nullableStr(formData, 'url'),
+  })
+  if (error) return { error: error.message }
+
+  revalidatePath('/', 'layout')
+  return { ok: true }
+}
+
+export async function deleteSponsor(id: string): Promise<ActionResult> {
+  const guard = await requireAdmin()
+  if (guard) return guard
+
+  const { error } = await supabase.from('sponsors').delete().eq('id', id)
+  if (error) return { error: error.message }
+
+  revalidatePath('/', 'layout')
+  return { ok: true }
+}

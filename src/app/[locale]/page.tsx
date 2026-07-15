@@ -1,10 +1,11 @@
 import { Fragment } from 'react'
 import { getTranslations, setRequestLocale } from 'next-intl/server'
-import { getCases, getDocuments } from '@/lib/data'
+import { getCases, getDocuments, getSponsors } from '@/lib/data'
 import { Link } from '@/navigation'
 import { CaseCard } from '@/components/site/CaseCard'
 import { HeroArt } from '@/components/site/HeroArt'
 import { HoverLink } from '@/components/site/HoverLink'
+import { SponsorGrid } from '@/components/site/SponsorGrid'
 import { Testimonials, type Testimonial } from '@/components/site/Testimonials'
 
 /** Port of the HOME `<main>` block (HANDOFF `Surgery for All.dc.html` lines 96-195). */
@@ -12,7 +13,7 @@ export default async function HomePage({ params }: { params: { locale: string } 
   setRequestLocale(params.locale)
 
   const t = await getTranslations('home')
-  const [cases, docs] = await Promise.all([getCases(), getDocuments()])
+  const [cases, docs, sponsors] = await Promise.all([getCases(), getDocuments(), getSponsors()])
   const specialties = t.raw('specialties') as string[]
   const testimonials = t.raw('testimonials') as Testimonial[]
 
@@ -342,6 +343,17 @@ export default async function HomePage({ params }: { params: { locale: string } 
           {t('testimonialsTitle')}
         </h2>
         <Testimonials items={testimonials} />
+      </section>
+
+      {/* Sponsors */}
+      <section style={{ maxWidth: 1220, margin: '0 auto', padding: '0 32px 74px' }}>
+        <div style={{ textAlign: 'center', marginBottom: 34 }}>
+          <div style={{ fontSize: 13, fontWeight: 600, color: '#0FA893', letterSpacing: '.04em', textTransform: 'uppercase', marginBottom: 10 }}>
+            {t('sponsors.eyebrow')}
+          </div>
+          <h2 style={{ fontFamily: "'Space Grotesk'", fontWeight: 700, fontSize: 36, letterSpacing: '-.02em' }}>{t('sponsors.title')}</h2>
+        </div>
+        <SponsorGrid items={sponsors} />
       </section>
 
       {/* Final CTA */}
