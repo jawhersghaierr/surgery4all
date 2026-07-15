@@ -16,7 +16,10 @@
       "titleLine2": "montrée sans filtre.",
       "subtitle": "Photos et vidéos de cas opératoires authentiques, protocoles détaillés et publications scientifiques. Une partie en accès libre — l’intégralité réservée aux abonnés.",
       "ctaCases": "Explorer les cas",
-      "ctaPricing": "Voir les abonnements"
+      "ctaPricing": "Voir les abonnements",
+      "imageSlot": "Déposez une photo / capture opératoire",
+      "badgeTitle": "Greffe osseuse guidée",
+      "badgeMeta": "Vidéo · 14 min · commentée"
     },
     "stats": {
       "casesLabel": "Cas documentés",

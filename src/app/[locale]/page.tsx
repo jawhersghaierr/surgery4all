@@ -144,7 +144,7 @@ export default async function HomePage({ params }: { params: { locale: string } 
               boxShadow: '0 30px 70px -24px rgba(12,21,18,.4)',
             }}
           >
-            <ImageSlot placeholder="Déposez une photo / capture opératoire" />
+            <ImageSlot placeholder={t('hero.imageSlot')} />
           </div>
           <div
             style={{
@@ -176,8 +176,8 @@ export default async function HomePage({ params }: { params: { locale: string } 
               </svg>
             </div>
             <div>
-              <div style={{ fontWeight: 600, fontSize: 14 }}>Greffe osseuse guidée</div>
-              <div style={{ fontSize: 12, color: '#566962' }}>Vidéo · 14 min · commentée</div>
+              <div style={{ fontWeight: 600, fontSize: 14 }}>{t('hero.badgeTitle')}</div>
+              <div style={{ fontSize: 12, color: '#566962' }}>{t('hero.badgeMeta')}</div>
             </div>
           </div>
         </div>

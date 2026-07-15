@@ -16,7 +16,10 @@
       "titleLine2": "shown without filters.",
       "subtitle": "Photos and videos of authentic surgical cases, detailed protocols and scientific publications. Some content is freely accessible — the full library is reserved for subscribers.",
       "ctaCases": "Explore the cases",
-      "ctaPricing": "See subscriptions"
+      "ctaPricing": "See subscriptions",
+      "imageSlot": "Drop a photo / surgical capture",
+      "badgeTitle": "Guided bone graft",
+      "badgeMeta": "Video · 14 min · narrated"
     },
     "stats": {
       "casesLabel": "Documented cases",
