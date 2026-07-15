@@ -43,6 +43,7 @@ export interface Comment {
   case_id: string
   author: string
   body: string
+  reply: string | null
   approved: boolean
   created_at?: string
 }

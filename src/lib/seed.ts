@@ -187,8 +187,8 @@ export const seedSponsors: Sponsor[] = [
 ]
 
 export const seedComments: Comment[] = [
-  { id: 'cm1', case_id: 'c1', author: 'Dr. Laurent M.', body: 'Documentation très claire, merci pour le partage.', approved: true },
-  { id: 'cm2', case_id: 'c1', author: 'Étudiant DFASO2', body: 'Le déroulé étape par étape aide beaucoup pour la révision.', approved: true },
+  { id: 'cm1', case_id: 'c1', author: 'Dr. Laurent M.', body: 'Documentation très claire, merci pour le partage.', reply: 'Merci Docteur, ravi que ce cas vous soit utile.', approved: true },
+  { id: 'cm2', case_id: 'c1', author: 'Étudiant DFASO2', body: 'Le déroulé étape par étape aide beaucoup pour la révision.', reply: null, approved: true },
 ]
 
 export const seedSubscribers: Subscriber[] = [

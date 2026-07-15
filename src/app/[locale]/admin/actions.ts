@@ -251,6 +251,21 @@ export async function approveComment(id: string): Promise<ActionResult> {
   return { ok: true }
 }
 
+export async function replyComment(id: string, formData: FormData): Promise<ActionResult> {
+  const guard = await requireAdmin()
+  if (guard) return guard
+
+  const reply = str(formData, 'reply').slice(0, 2000)
+  const { error } = await supabase
+    .from('comments')
+    .update({ reply: reply.length > 0 ? reply : null })
+    .eq('id', id)
+  if (error) return { error: error.message }
+
+  revalidatePath('/', 'layout')
+  return { ok: true }
+}
+
 export async function deleteComment(id: string): Promise<ActionResult> {
   const guard = await requireAdmin()
   if (guard) return guard

@@ -130,7 +130,9 @@
     "title": "Scientific documents",
     "subtitle": "Summaries freely accessible. Full PDFs and protocol sheets reserved for subscribers.",
     "download": "Download",
-    "premiumPdf": "Premium PDF"
+    "premiumPdf": "Premium PDF",
+    "previewFree": "Preview — download the full PDF",
+    "previewLocked": "Preview — subscribe for the full PDF"
   },
   "blog": {
     "eyebrow": "News",

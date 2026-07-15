@@ -130,7 +130,9 @@
     "title": "Documents scientifiques",
     "subtitle": "Résumés en accès libre. PDF complets et fiches protocolaires réservés aux abonnés.",
     "download": "Télécharger",
-    "premiumPdf": "PDF premium"
+    "premiumPdf": "PDF premium",
+    "previewFree": "Aperçu — téléchargez le PDF complet",
+    "previewLocked": "Aperçu — abonnez-vous pour le PDF complet"
   },
   "blog": {
     "eyebrow": "Actualités",

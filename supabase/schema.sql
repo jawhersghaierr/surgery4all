@@ -61,6 +61,10 @@ create table if not exists comments (
   case_id uuid not null references cases(id) on delete cascade,
   author text not null,
   body text not null,
+  reply text,
   approved boolean not null default false,
   created_at timestamptz default now()
 );
+
+-- Migration for pre-existing `comments` tables.
+alter table comments add column if not exists reply text;

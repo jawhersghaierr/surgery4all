@@ -22,6 +22,7 @@ import {
   deleteSponsor,
   approveComment,
   deleteComment,
+  replyComment,
   updateCase,
 } from './actions'
 
@@ -380,6 +381,17 @@ export function Dashboard({ cases, docs, posts, subscribers, sponsors, comments 
 
   async function handleApproveComment(id: string) {
     const result = await approveComment(id)
+    if (result?.error) {
+      toast.error(result.error)
+      return
+    }
+    router.refresh()
+  }
+
+  async function handleReplyComment(e: FormEvent<HTMLFormElement>, id: string) {
+    e.preventDefault()
+    const form = e.currentTarget
+    const result = await replyComment(id, new FormData(form))
     if (result?.error) {
       toast.error(result.error)
       return
@@ -784,6 +796,23 @@ export function Dashboard({ cases, docs, posts, subscribers, sponsors, comments 
                   </span>
                 </div>
                 <div style={{ fontSize: 13.5, lineHeight: 1.5, color: 'rgba(255,255,255,.75)', whiteSpace: 'pre-wrap' }}>{cm.body}</div>
+
+                <form onSubmit={(e) => handleReplyComment(e, cm.id)} style={{ display: 'flex', gap: 8, marginTop: 10, alignItems: 'flex-start' }}>
+                  <textarea
+                    name="reply"
+                    rows={2}
+                    maxLength={2000}
+                    defaultValue={cm.reply ?? ''}
+                    placeholder={t('comments.replyPlaceholder')}
+                    style={{ ...adminTextarea, flex: 1, minHeight: 40 }}
+                  />
+                  <button
+                    type="submit"
+                    style={{ height: 38, padding: '0 14px', borderRadius: 8, border: '1px solid rgba(255,255,255,.18)', background: 'transparent', color: '#4FD8C6', fontWeight: 600, fontSize: 13, cursor: 'pointer', fontFamily: 'inherit', flexShrink: 0 }}
+                  >
+                    {t('comments.saveReply')}
+                  </button>
+                </form>
               </div>
               {!cm.approved && (
                 <button
