@@ -22,12 +22,13 @@ const fieldStyle: CSSProperties = {
 /**
  * Port of the admin login screen (HANDOFF `Surgery for All.dc.html` lines
  * 321-333). `login` is a `'use server'` action imported and called directly
- * from this client handler — the installed React/react-dom in this project
- * doesn't have `useActionState`/`useFormState` wired up for this build, so a
- * plain `onSubmit` calling the action and awaiting its result is used
- * instead (the brief explicitly allows either a `<form action>` or a client
- * handler). On success, `router.refresh()` re-runs `getSession()` server-side
- * so `page.tsx` swaps the login screen for the dashboard.
+ * from this client handler — a plain `onSubmit` that awaits the action's
+ * result, matching the pattern already used by `ContactForm.tsx` — rather
+ * than wiring up `<form action={login}>` (the brief explicitly allows either
+ * a `<form action>` or a client handler; this keeps the mutation flow
+ * consistent across the whole admin dashboard, see `Dashboard.tsx`). On
+ * success, `router.refresh()` re-runs `getSession()` server-side so
+ * `page.tsx` swaps the login screen for the dashboard.
  */
 export function LoginForm() {
   const t = useTranslations('admin')
