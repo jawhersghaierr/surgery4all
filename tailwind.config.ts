@@ -34,6 +34,20 @@ const config: Config = {
           400: '#94a3b8', 500: '#64748b', 600: '#475569', 700: '#334155',
           800: '#1e293b', 900: '#0f172a', 950: '#020617',
         },
+        // Surgery4all handoff tokens
+        ink: '#0C1512',
+        surface: '#FFFFFF',
+        bg: '#F5F7F5',
+        teal: { DEFAULT: '#0FA893', dark: '#0A5049', light: '#4FD8C6' },
+        text2: '#566962',
+        textbody: '#3A4642',
+        alert: '#B4531F',
+        orange: '#FF8A4C',
+        danger: '#FF6B4A',
+      },
+      fontFamily: {
+        display: ['var(--font-display)', 'Space Grotesk', 'sans-serif'],
+        body: ['var(--font-body)', 'IBM Plex Sans', 'sans-serif'],
       },
       borderRadius: {
         lg: 'var(--radius)',
