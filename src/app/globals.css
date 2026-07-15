@@ -10,13 +10,22 @@
     --card-foreground: 160 28% 6%;
     --primary: 171 83% 36%;         /* #0FA893 */
     --primary-foreground: 0 0% 100%;
+    --secondary: 171 30% 94%;
+    --secondary-foreground: 171 60% 20%;
     --muted: 140 14% 96%;
     --muted-foreground: 162 9% 37%; /* #566962 */
+    --accent: 171 40% 94%;
+    --accent-foreground: 171 60% 20%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 160 28% 6%;
     --border: 160 28% 6% / 0.08;    /* fallback; raw rgba used in markup */
+    --input: 160 28% 6% / 0.14;
     --ring: 171 83% 36%;
     --radius: 0.75rem;
     --destructive: 9 100% 64%;      /* #FF6B4A */
     --destructive-foreground: 0 0% 100%;
+    --font-display: 'Space Grotesk';
+    --font-body: 'IBM Plex Sans';
     --sfa-bg:#F5F7F5; --sfa-ink:#0C1512; --sfa-teal:#0FA893; --sfa-teal-dark:#0A5049; --sfa-teal-light:#4FD8C6;
     --sfa-text2:#566962; --sfa-text-body:#3A4642;
   }
