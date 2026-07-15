@@ -26,6 +26,12 @@ yarn-error.log*
 # vercel
 .vercel
 
+# sdd workflow scratch (briefs, reports, review diffs — internal only)
+/.superpowers/
+
+# test coverage
+/coverage
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts
