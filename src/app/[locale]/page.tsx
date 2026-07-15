@@ -3,7 +3,7 @@ import { getTranslations, setRequestLocale } from 'next-intl/server'
 import { getCases, getDocuments } from '@/lib/data'
 import { Link } from '@/navigation'
 import { CaseCard } from '@/components/site/CaseCard'
-import { ImageSlot } from '@/components/site/ImageSlot'
+import { HeroArt } from '@/components/site/HeroArt'
 import { HoverLink } from '@/components/site/HoverLink'
 import { Testimonials, type Testimonial } from '@/components/site/Testimonials'
 
@@ -144,7 +144,7 @@ export default async function HomePage({ params }: { params: { locale: string } 
               boxShadow: '0 30px 70px -24px rgba(12,21,18,.4)',
             }}
           >
-            <ImageSlot placeholder={t('hero.imageSlot')} />
+            <HeroArt />
           </div>
           <div
             style={{
