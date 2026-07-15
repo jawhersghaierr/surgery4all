@@ -79,6 +79,7 @@ export default async function CaseDetailPage({ params }: { params: { locale: str
               body: t('formBody'),
               submit: t('formSubmit'),
               pending: t('formPending'),
+              replyLabel: t('replyLabel'),
             }}
           />
         </>

@@ -123,7 +123,8 @@
     "formAuthor": "Votre nom",
     "formBody": "Votre commentaire",
     "formSubmit": "Envoyer",
-    "formPending": "Merci ! Votre commentaire sera publié après validation."
+    "formPending": "Merci ! Votre commentaire sera publié après validation.",
+    "replyLabel": "Réponse du praticien"
   },
   "docs": {
     "eyebrow": "Publications",
@@ -244,7 +245,9 @@
       "empty": "Aucun commentaire.",
       "pending": "En attente",
       "approved": "Publié",
-      "approve": "Approuver"
+      "approve": "Approuver",
+      "replyPlaceholder": "Répondre à ce commentaire…",
+      "saveReply": "Répondre"
     },
     "addSponsor": {
       "heading": "＋ Ajouter un sponsor",
