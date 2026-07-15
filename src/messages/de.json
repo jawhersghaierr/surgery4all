@@ -1,0 +1,16 @@
+{
+  "home": {
+    "hero": {
+      "title": "Ihr Lächeln, unsere Priorität",
+      "subtitle": "Moderne Zahnarztpraxis: allgemeine Behandlung, Ästhetik und Implantologie in ruhiger Atmosphäre.",
+      "cta": "Termin vereinbaren",
+      "ctaSecondary": "Unsere Leistungen"
+    },
+    "services": {
+      "title": "Unsere Leistungen",
+      "care": { "title": "Allgemeine Behandlung", "desc": "Zahnreinigung, Karies, Vorsorge und regelmäßige Kontrolle." },
+      "aesthetic": { "title": "Ästhetische Zahnheilkunde", "desc": "Bleaching, Veneers und Ausrichtung des Lächelns." },
+      "implant": { "title": "Implantologie", "desc": "Implantate und Prothetik für ein vollständiges Gebiss." }
+    }
+  }
+}

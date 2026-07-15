@@ -1,0 +1,16 @@
+{
+  "home": {
+    "hero": {
+      "title": "Votre sourire, notre priorité",
+      "subtitle": "Cabinet dentaire moderne : soins, esthétique et implantologie dans un cadre serein.",
+      "cta": "Prendre rendez-vous",
+      "ctaSecondary": "Nos services"
+    },
+    "services": {
+      "title": "Nos services",
+      "care": { "title": "Soins généraux", "desc": "Détartrage, caries, prévention et suivi régulier." },
+      "aesthetic": { "title": "Esthétique dentaire", "desc": "Blanchiment, facettes et alignement du sourire." },
+      "implant": { "title": "Implantologie", "desc": "Implants et prothèses pour retrouver une dentition complète." }
+    }
+  }
+}

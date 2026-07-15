@@ -1,0 +1,16 @@
+{
+  "home": {
+    "hero": {
+      "title": "Your smile, our priority",
+      "subtitle": "Modern dental clinic: general care, aesthetics and implantology in a calm setting.",
+      "cta": "Book an appointment",
+      "ctaSecondary": "Our services"
+    },
+    "services": {
+      "title": "Our services",
+      "care": { "title": "General care", "desc": "Scaling, cavities, prevention and regular follow-up." },
+      "aesthetic": { "title": "Cosmetic dentistry", "desc": "Whitening, veneers and smile alignment." },
+      "implant": { "title": "Implantology", "desc": "Implants and prosthetics to restore a full set of teeth." }
+    }
+  }
+}
