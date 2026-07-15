@@ -39,7 +39,7 @@
     .sfa-navlinks{display:none!important}
     .sfa-burger{display:flex!important}
     .sfa-hidemob{display:none!important}
-    .sfa-hero{grid-template-columns:1fr!important;gap:38px!important}
+    .sfa-hero{grid-template-columns:1fr!important;gap:38px!important;padding-top:44px!important}
     .sfa-h1{font-size:42px!important}
     .sfa-g2dark,.sfa-about{grid-template-columns:1fr!important;gap:34px!important}
     .sfa-g3{grid-template-columns:1fr 1fr!important}
